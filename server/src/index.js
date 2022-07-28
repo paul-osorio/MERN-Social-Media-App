@@ -25,6 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(session(sessionMiddleware));
 
+app.use("/", require("./routes"));
+
 server.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
