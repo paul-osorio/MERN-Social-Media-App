@@ -1,0 +1,28 @@
+@tailwind base;
+
+@layer base {
+  .container {
+    @apply w-screen h-screen  bg-gray-200 flex items-center justify-center;
+  }
+  .containerGrid {
+    @apply grid grid-cols-2 h-[90%] laptop:w-3/4 mobile:w-[420px] rounded-3xl shadow bg-white;
+  }
+  .imageContainer {
+    @apply col-span-1 mobile:hidden laptop:block rounded-l-3xl bg-contain bg-no-repeat bg-bottom;
+  }
+  .formContainer {
+    @apply laptop:col-span-1 mobile:col-span-full bg-white rounded-3xl border-r-8 border-gray-800;
+  }
+  .formContainerAlign {
+    @apply h-full w-full flex flex-col items-center justify-center;
+  }
+  .formContainerAlign > div {
+    @apply min-w-[320px] mb-10 flex items-center justify-center;
+  }
+  .formContainerAlign > div > img {
+    @apply w-12 h-12 drop-shadow;
+  }
+  .formContainerAlign > div > h1 {
+    @apply text-5xl font-bold text-gray-800 mx-2 drop-shadow border-b border-gray-800;
+  }
+}

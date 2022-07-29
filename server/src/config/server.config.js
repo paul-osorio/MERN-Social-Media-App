@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
+const MongoStore = require("connect-mongo");
+
+const PORT = process.env.PORT || 5000;
 
 module.exports = {
-  port: process.env.PORT,
+  port: PORT,
   corsOptions: {
     origin: ["http://localhost:3000"],
     credentials: true,
@@ -17,6 +20,9 @@ module.exports = {
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
     },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URL,
+    }),
   },
   connectDB: async () => {
     mongoose

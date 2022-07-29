@@ -1,0 +1,72 @@
+@tailwind base;
+
+@layer base {
+  /**
+    * Floating input and label css styles
+    */
+  .floatingInput {
+    @apply w-full outline-none  transition placeholder-transparent border px-3 rounded focus:ring-1 focus:ring-indigo-500;
+  }
+  .floatingLabel {
+    @apply text-indigo-600 bg-white -top-2.5  px-2 absolute text-sm transition-all left-2 pointer-events-none;
+  }
+  .floatingInput:placeholder-shown ~ .floatingLabel {
+    @apply px-2 left-3 text-gray-600;
+  }
+  .floatingInput:focus ~ .floatingLabel {
+    @apply bg-white px-2 left-2 -top-2.5 text-sm text-indigo-600;
+  }
+
+  /**
+    * Form css styles
+    * Large Label
+    */
+
+  .floatingInput:placeholder-shown ~ .largeLabel {
+    @apply top-3.5;
+  }
+  .floatingInput:focus ~ .largeLabel {
+    @apply -top-2.5;
+  }
+
+  /**
+    * Form css styles
+    * Medium Label
+    */
+
+  .floatingInput:placeholder-shown ~ .mediumLabel {
+    @apply top-2.5;
+  }
+  .floatingInput:focus ~ .mediumLabel {
+    @apply -top-2.5;
+  }
+
+  /**
+    * Form css styles
+    * Small Label
+    */
+
+  .floatingInput:placeholder-shown ~ .smallLabel {
+    @apply top-1.5;
+  }
+  .floatingInput:focus ~ .smallLabel {
+    @apply -top-2.5;
+  }
+
+  /**
+    * Error classname
+    */
+  .inputError {
+    @apply border-red-300;
+  }
+  .error {
+    @apply text-red-500 text-xs;
+  }
+
+  /**
+    * Sign button styles
+    */
+  .signInButton {
+    @apply w-full bg-indigo-500 py-3 shadow shadow-black/20 transition-all rounded  active:shadow-inner active:shadow-black/20 text-white;
+  }
+}

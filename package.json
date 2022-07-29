@@ -1,5 +1,5 @@
 {
-  "name": "social-media-app",
+  "name": "vaybin",
   "version": "1.0.0",
   "description": "Social Media App Built in React and Nodejs",
   "main": "server/index.js",
