@@ -1,2 +1,3 @@
 import AuthContainer, { ImageContainer, FormContainer } from "./AuthContainer";
-export { AuthContainer, ImageContainer, FormContainer };
+import Navbar from "./Navbar";
+export { AuthContainer, ImageContainer, FormContainer, Navbar };

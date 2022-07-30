@@ -41,7 +41,7 @@ const AvatarsModal = ({ handleClose }: AvatarModalInterface) => {
           onClick={handleClose}
           className="hover:text-red-500 absolute top-2 right-5"
         >
-          <i className="far text-xl fa-times "></i>
+          <i className="fal text-xl fa-times "></i>
         </button>
         <OwnProfile />
         <div className=" grid grid-cols-4 gap-2">

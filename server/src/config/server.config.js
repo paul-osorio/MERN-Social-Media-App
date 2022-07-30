@@ -8,9 +8,10 @@ module.exports = {
   corsOptions: {
     origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
     credentials: true,
+    optionsSuccessStatus: 200,
   },
   sessionMiddleware: {
-    name: "socmed-session",
+    name: "vybin_session",
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false,
@@ -18,7 +19,6 @@ module.exports = {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
     },
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URL,

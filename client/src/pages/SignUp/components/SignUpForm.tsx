@@ -1,8 +1,13 @@
 import { Field, Form, Formik, FormikHelpers } from "formik";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { FloatingTextField, SelectDropdown } from "../../../components/form";
+import {
+  FloatingTextField,
+  PasswordTextField,
+  SelectDropdown,
+} from "../../../components/form";
 import { useSignUpContext } from "../../../context/SignUpContext";
-import { userSignUp } from "../../../lib/auth";
+import { checkEmail, userSignUp } from "../../../lib/auth";
 import SelectAvatar from "./SelectAvatar";
 
 import SubmitButton from "./SubmitButton";
@@ -24,6 +29,7 @@ type FormikSubmitHandler<V> = (value: V, actions: FormikHelpers<V>) => void;
 
 const SignUpForm = () => {
   const { avatar, selectedAvatar } = useSignUpContext();
+  const navigate = useNavigate();
 
   /**
    * Define Gender Dropdown options
@@ -57,7 +63,26 @@ const SignUpForm = () => {
     gender: Yup.string().required("Gender is required"),
     email: Yup.string()
       .email("Invalid email address")
-      .required("Email is required"),
+      .required("Email is required")
+      /**
+       * Check if email already exist and fire an error
+       */
+      .test("email-unique", "Email already exist", async (value: any) => {
+        try {
+          await checkEmail(value);
+          /**
+           * If email is unique, return true
+           */
+          return true;
+        } catch (error) {
+          /**
+           * If email is not unique, return false
+           * and fire an error
+           * @returns {boolean}
+           * */
+          return false;
+        }
+      }),
     password: Yup.string()
       .min(8, "Password must be at least 8 characters")
       .required("Password is required"),
@@ -91,6 +116,10 @@ const SignUpForm = () => {
 
     try {
       await userSignUp(data);
+
+      navigate("/registerSuccess");
+
+      sessionStorage.setItem("email", values.email);
       setSubmitting(false);
     } catch (error) {
       console.log(error);
@@ -140,14 +169,12 @@ const SignUpForm = () => {
               />
             </div>
 
-            <FloatingTextField
-              type="password"
+            <PasswordTextField
               name="password"
               placeholder="Password"
               size="medium"
             />
-            <FloatingTextField
-              type="password"
+            <PasswordTextField
               name="passwordConfirm"
               placeholder="Confirm Password"
               size="medium"

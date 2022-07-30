@@ -67,6 +67,6 @@
     * Sign button styles
     */
   .signInButton {
-    @apply w-full bg-indigo-500 py-3 shadow shadow-black/20 transition-all rounded  active:shadow-inner active:shadow-black/20 text-white;
+    /* @apply w-full bg-indigo-500 py-3 shadow shadow-black/20 transition-all rounded  active:shadow-inner active:shadow-black/20 text-white; */
   }
 }

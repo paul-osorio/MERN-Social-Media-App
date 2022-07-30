@@ -5,6 +5,7 @@ const app = express();
 const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const { Server } = require("http");
 const {
   port,
@@ -34,7 +35,7 @@ app.use(cors(corsOptions));
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cookieParser());
 app.use(session(sessionMiddleware));
 
 /**

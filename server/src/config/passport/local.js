@@ -3,6 +3,24 @@ const LocalStrategy = require("passport-local").Strategy;
 const UserModel = require("../../models/users");
 const bcrypt = require("bcrypt");
 
+//Define JWT strategy
+const JWTstrategy = require("passport-jwt").Strategy;
+const ExtractJWT = require("passport-jwt").ExtractJwt;
+
+const jwt = new JWTstrategy(
+  {
+    secretOrKey: process.env.SECRET,
+    jwtFromRequest: ExtractJWT.fromUrlQueryParameter("token"),
+  },
+  async (token, done) => {
+    try {
+      return done(null, token.user);
+    } catch (err) {
+      done(err);
+    }
+  }
+);
+
 /**
  * Define local strategy for passport
  */
@@ -63,5 +81,6 @@ const deserializeUser = (id, done) => {
 passport.serializeUser(serializeUser);
 passport.deserializeUser(deserializeUser);
 passport.use(local);
+passport.use(jwt);
 
 module.exports = passport;

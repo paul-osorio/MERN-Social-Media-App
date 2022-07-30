@@ -18,7 +18,7 @@ const AvatarImage = ({ avatar, onClick }: AvatarImageInterface) => {
         " flex items-center justify-center   rounded-full"
       }
     >
-      <img src={avatar.src} alt="" className="w-16 h-16" />
+      <img src={avatar.src} alt="" className="w-16 h-16 " />
     </div>
   );
 };
