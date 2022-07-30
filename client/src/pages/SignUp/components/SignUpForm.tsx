@@ -1,9 +1,11 @@
-import { Form, Formik } from "formik";
+import { Field, Form, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import { FloatingTextField } from "../../../components/form";
+import { FloatingTextField, SelectDropdown } from "../../../components/form";
+import { useSignUpContext } from "../../../context/SignUpContext";
+import { userSignUp } from "../../../lib/auth";
+import SelectAvatar from "./SelectAvatar";
 
-import avatarPlaceholder from "../../../assets/images/avatarPlaceholder.png";
-import ReactSelect from "react-select";
+import SubmitButton from "./SubmitButton";
 
 /**
  * Interface  props for Sign Up form values
@@ -14,14 +16,19 @@ interface FormValues {
   nameLast: string;
   email: string;
   gender: string;
-  avatar: string;
-  profile: string;
   password: string;
   passwordConfirm: string;
 }
 
+type FormikSubmitHandler<V> = (value: V, actions: FormikHelpers<V>) => void;
+
 const SignUpForm = () => {
-  const options = [
+  const { avatar, selectedAvatar } = useSignUpContext();
+
+  /**
+   * Define Gender Dropdown options
+   */
+  const genderOptions = [
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" },
     { value: "Others", label: "Others" },
@@ -36,8 +43,6 @@ const SignUpForm = () => {
     nameLast: "",
     email: "",
     gender: "",
-    avatar: "",
-    profile: "",
     password: "",
     passwordConfirm: "",
   };
@@ -65,29 +70,43 @@ const SignUpForm = () => {
    * Create function to submit form
    */
 
-  const handleSubmit = (values: FormValues) => {
-    console.log(values);
+  const handleSubmit: FormikSubmitHandler<FormValues> = async (
+    values,
+    { setSubmitting }
+  ) => {
+    setSubmitting(true);
+
+    /**
+     * Create a new user
+     */
+    const data = {
+      nameFirst: values.nameFirst,
+      nameLast: values.nameLast,
+      email: values.email,
+      password: values.password,
+      avatar: selectedAvatar,
+      profile: avatar,
+      gender: values.gender,
+    };
+
+    try {
+      await userSignUp(data);
+      setSubmitting(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <Formik
       initialValues={initialValues}
+      validateOnBlur={false}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {() => (
+      {({ isSubmitting, setFieldValue }) => (
         <Form className="w-[85%]">
-          <div className="w-full flex flex-col items-center justify-center mb-3">
-            <img
-              src={avatarPlaceholder}
-              alt=""
-              className="w-20 h-20 rounded-full object-cover shadow border"
-            />
-            <button className="border px-2 py-1 rounded text-sm mt-2">
-              Select Avatar
-            </button>
-          </div>
-
+          <SelectAvatar />
           <div className="grid grid-cols-2 gap-x-2 gap-y-4">
             <FloatingTextField
               name="nameFirst"
@@ -107,11 +126,18 @@ const SignUpForm = () => {
               />
             </div>
             <div className="col-span-1">
-              <span className="block text-end">Gender:</span>
+              <span className="block text-end text-sm text-gray-700">
+                Gender:
+              </span>
             </div>
 
             <div className="col-span-1">
-              <ReactSelect options={options} />
+              <Field
+                component={SelectDropdown}
+                name="gender"
+                options={genderOptions}
+                placeholder="Select Gender"
+              />
             </div>
 
             <FloatingTextField
@@ -126,13 +152,7 @@ const SignUpForm = () => {
               placeholder="Confirm Password"
               size="medium"
             />
-            <div className="col-span-1" />
-
-            <div className="col-span-1">
-              <button className="bg-indigo-500 text-white w-full py-2 rounded">
-                Sign Up
-              </button>
-            </div>
+            <SubmitButton isSubmitting={isSubmitting} />
           </div>
         </Form>
       )}

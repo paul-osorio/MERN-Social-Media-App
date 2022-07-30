@@ -22,13 +22,22 @@ const Container = ({ children }: ContainerProps) => {
 /**
  * Image container component for the SignIn page.
  */
-export const ImageContainer = ({ Image }: { Image: string }) => {
+export const ImageContainer = ({
+  Image,
+  backgroundColor,
+}: {
+  /**
+   * Type declartion for ImageContainer
+   */
+  Image: string;
+  backgroundColor: string;
+}) => {
   return (
     <div
       className={Style.imageContainer}
       style={{
         backgroundImage: `url(${Image})`,
-        backgroundColor: "#3B6CD2",
+        backgroundColor: backgroundColor,
       }}
     ></div>
   );

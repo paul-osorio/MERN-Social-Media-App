@@ -2,10 +2,10 @@
 
 @layer base {
   .container {
-    @apply w-screen h-screen  bg-gray-200 flex items-center justify-center;
+    @apply w-screen h-screen  bg-gray-100 flex items-center justify-center;
   }
   .containerGrid {
-    @apply grid grid-cols-2 h-[90%] laptop:w-3/4 mobile:w-[420px] rounded-3xl shadow bg-white;
+    @apply grid grid-cols-2 h-[90%] laptop:w-3/4 mobile:w-[420px] rounded-3xl shadow drop-shadow bg-white;
   }
   .imageContainer {
     @apply col-span-1 mobile:hidden laptop:block rounded-l-3xl bg-contain bg-no-repeat bg-bottom;

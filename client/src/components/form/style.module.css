@@ -8,10 +8,10 @@
     @apply w-full outline-none  transition placeholder-transparent border px-3 rounded focus:ring-1 focus:ring-indigo-500;
   }
   .floatingLabel {
-    @apply text-indigo-600 bg-white -top-2.5  px-2 absolute text-sm transition-all left-2 pointer-events-none;
+    @apply text-indigo-600 bg-white -top-2.5  px-2 absolute transition-all left-2 pointer-events-none;
   }
   .floatingInput:placeholder-shown ~ .floatingLabel {
-    @apply px-2 left-3 text-gray-600;
+    @apply px-2 left-3 text-gray-500;
   }
   .floatingInput:focus ~ .floatingLabel {
     @apply bg-white px-2 left-2 -top-2.5 text-sm text-indigo-600;
@@ -23,7 +23,7 @@
     */
 
   .floatingInput:placeholder-shown ~ .largeLabel {
-    @apply top-3.5;
+    @apply top-3;
   }
   .floatingInput:focus ~ .largeLabel {
     @apply -top-2.5;
@@ -35,7 +35,7 @@
     */
 
   .floatingInput:placeholder-shown ~ .mediumLabel {
-    @apply top-2.5;
+    @apply top-2;
   }
   .floatingInput:focus ~ .mediumLabel {
     @apply -top-2.5;
