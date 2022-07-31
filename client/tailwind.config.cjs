@@ -7,7 +7,11 @@ module.exports = {
       tablet: "768px",
       laptop: "1024px",
     },
-    extend: {},
+    extend: {
+      boxShadow: {
+        dark: "0px 2px 10px rgba(0, 0, 0, 0.2)",
+      },
+    },
   },
   plugins: [],
 };

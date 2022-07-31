@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import MainLayout from "./layout/MainLayout";
 import Homepage from "./pages/Homepage";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -13,7 +14,9 @@ function App() {
         {/**
          * PrivateRoute is a route that is only accessible to authenticated users.
          */}
-        <Route path="" element={<Homepage />} />
+        <Route element={<MainLayout />}>
+          <Route path="" element={<Homepage />} />
+        </Route>
       </Route>
       <Route element={<PublicRoute />}>
         {/**

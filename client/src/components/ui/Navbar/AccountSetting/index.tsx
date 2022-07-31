@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { usePopper } from "react-popper";
 import { motion } from "framer-motion";
+import ProfileName from "./ProfileName";
+import SubMenu from "./SubMenu";
+import { userSignOut } from "../../../../lib/auth";
 
 interface IAccountProps {
   referenceElement: any;
@@ -19,14 +22,13 @@ const AccountSetting = ({ referenceElement }: IAccountProps) => {
           offset: [0, 8],
         },
       },
-      {
-        name: "flip",
-        options: {
-          padding: 10,
-        },
-      },
     ],
   });
+
+  const onLogout = async () => {
+    await userSignOut();
+    location.href = "/login";
+  };
 
   return (
     <motion.div
@@ -35,12 +37,26 @@ const AccountSetting = ({ referenceElement }: IAccountProps) => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
       ref={setPopperElement}
-      className="bg-red-500 drop-shadow-lg w-52 h-52 rounded"
+      className="bg-white shadow-dark w-72 rounded-lg p-5  flex flex-col "
       style={styles.popper}
       {...attributes.popper}
     >
-      Element
-      <div ref={setArrowElement} style={styles.arrow} />
+      <ProfileName />
+      <hr className="mb-2" />
+
+      <SubMenu
+        Name="LightMode"
+        Icon={<i className="fas fa-sun"></i>}
+        Type="Button"
+      />
+      <SubMenu
+        Name="Log Out"
+        Icon={<i className="fas fa-sign-out-alt"></i>}
+        Type="Button"
+        onClick={onLogout}
+      />
+
+      <div ref={setArrowElement} style={styles.arrow} {...attributes.arrow} />
     </motion.div>
   );
 };
