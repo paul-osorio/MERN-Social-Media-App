@@ -23,10 +23,10 @@ const Messages = () => {
       style={{
         height: "500px",
       }}
-      className="bg-white fixed bottom-0 right-2 shadow-dark  rounded-t-lg"
+      className="bg-white fixed bottom-0 right-2 shadow-dark  rounded-t-3xl"
     >
-      {receiverID ? <ReceiverCard /> : <CollapseCard />}
-      {isOpen ? receiverID ? <Message /> : <Inbox /> : null}
+      {!receiverID ? <ReceiverCard /> : <CollapseCard />}
+      {isOpen ? !receiverID ? <Message /> : <Inbox /> : null}
     </motion.div>
   );
 };

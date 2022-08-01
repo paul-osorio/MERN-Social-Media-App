@@ -35,9 +35,9 @@ const TextArea = ({ sendOnEnter }: ITextArea) => {
       <button
         type="button"
         disabled={message.length === 0}
-        className="bg-indigo-400 disabled:hover:bg-indigo-300 disabled:bg-indigo-300 hover:bg-indigo-500 flex items-center justify-center absolute right-1 h-8 rounded-full w-8 text-white"
+        className="bg-indigo-500 disabled:hover:bg-indigo-300 disabled:bg-indigo-300 hover:bg-indigo-600 flex items-center justify-center absolute right-1 h-8 rounded-full w-8 text-white"
       >
-        <i className="fad text-[14px] fa-paper-plane"></i>{" "}
+        <span className="material-icons text-[18px]">send</span>{" "}
       </button>
     </div>
   );

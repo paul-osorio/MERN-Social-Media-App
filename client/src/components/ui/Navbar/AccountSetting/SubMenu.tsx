@@ -20,7 +20,7 @@ const SubMenu = ({ to, Name, Icon, Type = "link", onClick }: ISubMenuProps) => {
   return (
     <div
       onClick={Type === "link" ? navigateTo : onClick}
-      className="flex items-center p-2 space-x-2 hover:bg-gray-100 rounded-lg"
+      className="flex items-center p-2 px-4 space-x-3 hover:bg-gray-100 rounded-3xl"
     >
       <div className="text-xl text-gray-700">{Icon}</div>
       <span className="text-gray-700">{Name}</span>

@@ -8,9 +8,9 @@ const CollapseCard = () => {
 
   return (
     <div className=" border-b h-16 ">
-      <div className="flex items-center h-full px-5 font-medium justify-between">
+      <div className="flex items-center h-full px-7 font-medium justify-between">
         <span>
-          <i className="fal mr-2 fa-envelope"></i>
+          <i className="fad mr-2 fa-envelope"></i>
           <span className="text-gray-800">Messages</span>
         </span>
         <button

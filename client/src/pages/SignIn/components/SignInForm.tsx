@@ -3,7 +3,6 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { FloatingTextField, SignInButton } from "../../../components/form";
 import { userSignIn } from "../../../lib/auth";
-import Cookies from "js-cookie";
 import { PasswordTextField } from "../../../components/form";
 
 interface FormValues {

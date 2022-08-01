@@ -37,7 +37,7 @@ const AccountSetting = ({ referenceElement }: IAccountProps) => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
       ref={setPopperElement}
-      className="bg-white shadow-dark w-72 rounded-lg p-5  flex flex-col "
+      className="bg-white shadow-dark w-72 rounded-3xl p-5  flex flex-col "
       style={styles.popper}
       {...attributes.popper}
     >
@@ -45,7 +45,7 @@ const AccountSetting = ({ referenceElement }: IAccountProps) => {
       <hr className="mb-2" />
 
       <SubMenu
-        Name="LightMode"
+        Name="Lightmode"
         Icon={<i className="fas fa-sun"></i>}
         Type="Button"
       />
