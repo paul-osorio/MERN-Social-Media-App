@@ -3,25 +3,28 @@ import { useCreatePost } from "../../../../context/CreatePostContext";
 
 const Options = () => {
   const imageRef = useRef<any>();
-  const { setImages, images } = useCreatePost();
+  const { setImages, images, setImageWarning } = useCreatePost();
 
   const onChange = (e: any) => {
     const files = e.target.files;
     if (files) {
-      //map through the files and create a new image object for each
-      Array.from(files).map((file: any, index) => {
-        setImages((prevImages: any) => [
-          ...prevImages,
-          { id: btoa(index + "" + Date.now()), file },
-        ]);
-      });
-
-      console.log(images);
+      if (images.length + files.length > 4) {
+        setImageWarning(true);
+      } else {
+        setImageWarning(false);
+        //map through the files and create a new image object for each
+        Array.from(files).map((file: any, index) => {
+          setImages((prevImages: any) => [
+            ...prevImages,
+            { id: btoa(index + "" + Date.now()), file },
+          ]);
+        });
+      }
     }
   };
 
   return (
-    <div className="py-2 flex items-center space-x-2">
+    <div className=" flex items-center space-x-2">
       <input
         ref={imageRef}
         onChange={onChange}

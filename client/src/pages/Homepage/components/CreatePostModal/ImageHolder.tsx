@@ -1,5 +1,4 @@
 import { useCreatePost } from "../../../../context/CreatePostContext";
-import { motion } from "framer-motion";
 
 interface ImageHolderInterface {
   image: any;
@@ -7,7 +6,7 @@ interface ImageHolderInterface {
 }
 
 const ImageHolder = ({ image, id }: ImageHolderInterface) => {
-  const { setImages } = useCreatePost();
+  const { setImages, images, setImageWarning } = useCreatePost();
 
   const onRemove = () => {
     setImages((prevImages: any) =>
@@ -16,12 +15,7 @@ const ImageHolder = ({ image, id }: ImageHolderInterface) => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="relative"
-    >
+    <div className="relative h-full">
       <div
         role="button"
         onClick={onRemove}
@@ -29,12 +23,8 @@ const ImageHolder = ({ image, id }: ImageHolderInterface) => {
       >
         <span className="material-icons text-white text-lg">close</span>
       </div>
-      <img
-        className="w-full rounded-3xl border h-52 object-cover"
-        src={image}
-        alt="image"
-      />
-    </motion.div>
+      <img className="w-full h-full object-cover" src={image} alt="image" />
+    </div>
   );
 };
 
