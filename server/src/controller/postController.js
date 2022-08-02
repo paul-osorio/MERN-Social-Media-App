@@ -32,32 +32,12 @@ const createPost = async (req, res) => {
 
 const getPosts = async (req, res) => {
   try {
-    const posts = await PostModel.find({});
+    const posts = await PostModel.find({})
+      .populate("user")
+      .sort({ createdAt: -1 })
+      .populate("user");
 
-    const postArray = [];
-
-    for (let i = 0; i < posts.length; i++) {
-      const user = await UserModel.findById(posts[i].user);
-      postArray.push({
-        _id: posts[i]._id,
-        content: posts[i].content,
-        images: posts[i].images,
-        author: {
-          nameFirst: user.nameFirst,
-          nameLast: user.nameLast,
-          avatar: user.avatar,
-          profile: user.profile,
-        },
-        createdAt: posts[i].createdAt,
-      });
-    }
-
-    //sort posts by createdAt
-    postArray.sort((a, b) => {
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    });
-
-    res.status(200).json(postArray);
+    res.status(200).json(posts);
   } catch (error) {
     res.status(500).json(error);
   }

@@ -2,7 +2,7 @@ import { useSignUpContext } from "../../../context/SignUpContext";
 import React, { useRef } from "react";
 
 const OwnProfile = () => {
-  const { setAvatar } = useSignUpContext();
+  const { setAvatar, setProfile } = useSignUpContext();
   const ref = useRef<any>(null);
 
   const handleFileChange = (event: any) => {
@@ -11,6 +11,7 @@ const OwnProfile = () => {
     if (file) {
       const objectUrl = URL.createObjectURL(file);
       setAvatar(objectUrl);
+      setProfile(file);
     }
   };
 

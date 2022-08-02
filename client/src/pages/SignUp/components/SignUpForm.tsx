@@ -28,7 +28,7 @@ interface FormValues {
 type FormikSubmitHandler<V> = (value: V, actions: FormikHelpers<V>) => void;
 
 const SignUpForm = () => {
-  const { avatar, selectedAvatar } = useSignUpContext();
+  const { avatar, selectedAvatar, profile } = useSignUpContext();
   const navigate = useNavigate();
 
   /**
@@ -104,18 +104,18 @@ const SignUpForm = () => {
     /**
      * Create a new user
      */
-    const data = {
-      nameFirst: values.nameFirst,
-      nameLast: values.nameLast,
-      email: values.email,
-      password: values.password,
-      avatar: selectedAvatar,
-      profile: avatar,
-      gender: values.gender,
-    };
+
+    const formData = new FormData();
+    formData.append("nameFirst", values.nameFirst);
+    formData.append("nameLast", values.nameLast);
+    formData.append("email", values.email);
+    formData.append("password", values.password);
+    formData.append("avatar", selectedAvatar || "");
+    formData.append("profile", profile || "");
+    formData.append("gender", values.gender);
 
     try {
-      await userSignUp(data);
+      await userSignUp(formData);
 
       navigate("/registerSuccess");
 

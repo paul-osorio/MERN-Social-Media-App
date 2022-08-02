@@ -6,7 +6,7 @@ const Images = ({ images }: { images: any }) => {
   return (
     <div className="mt-3  rounded-3xl">
       <div className="w-full grid grid-cols-2 overflow-auto gap-2 rounded-3xl">
-        {images.map((image: string, index: number) => {
+        {images?.map((image: string, index: number) => {
           return (
             <div
               key={index}
@@ -16,7 +16,7 @@ const Images = ({ images }: { images: any }) => {
                     ? "col-span-2 h-52 "
                     : "col-span-1 h-52 "
                   : images.length === 1
-                  ? "col-span-2 max-h-[424px]"
+                  ? "col-span-2 max-h-[800px]"
                   : images.length === 2
                   ? "col-span-auto h-72"
                   : "col-span-auto h-52"

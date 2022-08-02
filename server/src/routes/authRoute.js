@@ -11,8 +11,10 @@ const {
   userSession,
 } = require("../controller/authController");
 
+const { profileUploadMiddleware } = require("../middleware/profileUpload");
+
 router.get("/session", userSession);
-router.post("/register", userRegister);
+router.post("/register", profileUploadMiddleware, userRegister);
 router.post("/login", userLogin);
 router.post("/logout", isAuthenticated, userLogout);
 router.post("/checkEmail", checkEmail);

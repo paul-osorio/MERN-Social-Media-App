@@ -22,5 +22,10 @@ const postSchema = new Schema(
   }
 );
 
+postSchema.index({
+  content: "text",
+  images: "text",
+});
+
 const PostModel = mongoose.model("Post", postSchema);
 module.exports = PostModel;
