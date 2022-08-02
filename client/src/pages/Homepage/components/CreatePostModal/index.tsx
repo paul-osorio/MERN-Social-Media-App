@@ -45,7 +45,7 @@ const CreatePostModal = ({ handleClose }: ICreatePostModal) => {
                   </div>
                 )}
               </div>
-              <PostButton />
+              <PostButton handleClose={handleClose} />
             </div>
           )}
         </CreatePostContext.Consumer>

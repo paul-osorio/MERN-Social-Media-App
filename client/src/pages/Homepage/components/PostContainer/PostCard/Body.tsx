@@ -1,11 +1,14 @@
+import Images from "./Images";
+
 interface IBody {
-  image?: string;
+  images?: any;
+  content?: string;
 }
-const Body = ({ image }: IBody) => {
+const Body = ({ content, images }: IBody) => {
   return (
     <div className="flex flex-col space-y-2">
-      <p>asfasf as f sa as f</p>
-      {image && <div className="h-96 rounded-3xl bg-red-500"></div>}
+      <p>{content}</p>
+      {images.length > 0 && <Images images={images} />}
     </div>
   );
 };
