@@ -7,3 +7,19 @@ export function searchAll(search: string) {
     },
   });
 }
+
+export function searchPeople(search: string) {
+  return axiosClient.get("/search/people", {
+    params: {
+      q: search,
+    },
+  });
+}
+
+export function searchPosts(search: string) {
+  return axiosClient.get("/search/posts", {
+    params: {
+      q: search,
+    },
+  });
+}

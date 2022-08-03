@@ -7,13 +7,21 @@ const NavSearchBar = () => {
 
   const [searchParams] = useSearchParams();
   const searchquery = searchParams.get("q");
+  const type = searchParams.get("type");
 
   const onSearch = (e: any) => {
     if (e.key === "Enter") {
       queryClient.invalidateQueries(["searchAll", searchquery]);
+      queryClient.invalidateQueries(["searchPeople", searchquery]);
+      queryClient.invalidateQueries(["searchPosts", searchquery]);
+      let Type = type;
+
+      if (type === null) {
+        Type = "All";
+      }
       navigate({
         pathname: "/search",
-        search: `?type=All&q=${e.target.value}`,
+        search: `?type=${Type}&q=${e.target.value}`,
       });
     }
   };

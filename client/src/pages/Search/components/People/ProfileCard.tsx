@@ -7,7 +7,7 @@ const ProfileCard = ({ user }: { user: any }) => {
   return (
     <div
       role="button"
-      className="p-5 flex items-center justify-between hover:bg-gray-100 rounded-3xl"
+      className="p-5 flex items-center justify-between hover:shadow-indigo-300 bg-white shadow rounded-3xl"
     >
       <div className="flex items-center space-x-4">
         <img

@@ -1,3 +1,6 @@
+import Image from "../Image";
+import placeholderImg from "../../../assets/images/placeholderImg.jpg";
+
 interface ImageHolderInterface {
   image: any;
 }
@@ -5,7 +8,11 @@ interface ImageHolderInterface {
 const ImageHolder = ({ image }: ImageHolderInterface) => {
   return (
     <div className="relative h-full">
-      <img className="w-full h-full object-cover" src={image} alt="image" />
+      <Image
+        src={image}
+        placeholderImg={placeholderImg}
+        className="w-full h-full object-cover"
+      />
     </div>
   );
 };

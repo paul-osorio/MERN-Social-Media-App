@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import BodyLayout from "./layout/BodyLayout";
 import MainLayout from "./layout/MainLayout";
 import Homepage from "./pages/Homepage";
+import NotFound from "./pages/NotFound";
 import Search from "./pages/Search";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -38,6 +39,8 @@ function App() {
           <Route path="/registerSuccess" element={<SuccessRegister />} />
         </Route>
       </Route>
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

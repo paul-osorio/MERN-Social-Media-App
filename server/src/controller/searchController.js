@@ -39,6 +39,57 @@ const searchAll = async (req, res) => {
   }
 };
 
+const searchPeople = async (req, res) => {
+  const q = req.query.q;
+  try {
+    const users = await UserModel.find(
+      {
+        $text: { $search: q },
+      },
+      {
+        score: { $meta: "textScore" },
+      },
+      {
+        sort: { score: { $meta: "textScore" } },
+      }
+    );
+    res.json({
+      users,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
+const searchPosts = async (req, res) => {
+  const q = req.query.q;
+  try {
+    const posts = await PostModel.find(
+      {
+        $text: { $search: q },
+      },
+      {
+        score: { $meta: "textScore" },
+      },
+      {
+        sort: { score: { $meta: "textScore" } },
+      }
+    ).populate("user");
+
+    res.json({
+      posts,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
 module.exports = {
   searchAll,
+  searchPeople,
+  searchPosts,
 };
