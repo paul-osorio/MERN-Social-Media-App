@@ -3,13 +3,16 @@ import { userSession } from "../lib/auth";
 
 const useAuth = () => {
   const [auth, setAuth] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
 
   const authenticate = async () => {
     try {
-      await userSession();
+      const res = await userSession();
+      setUser(res.data);
       setAuth(true);
     } catch (error: any) {
       setAuth(false);
+      setUser(null);
     }
   };
 
@@ -17,7 +20,7 @@ const useAuth = () => {
     authenticate();
   }, []);
 
-  return auth;
+  return { user, auth };
 };
 
 export default useAuth;

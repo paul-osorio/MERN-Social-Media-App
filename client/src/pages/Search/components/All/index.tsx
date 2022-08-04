@@ -29,22 +29,18 @@ const AllCard = () => {
   return (
     <div className="flex flex-col space-y-3 w-full mb-5 ">
       {data?.users || data?.posts ? (
-        data?.users.length > 0 || data?.posts.length > 0 ? (
-          <>
-            {data?.users.length > 0 ? (
-              <PeopleCard data={data?.users} />
-            ) : (
-              <NoPeopleFound />
-            )}
-            <div className="flex flex-col space-y-3">
-              {data?.posts.map((post: any) => (
-                <PostCard key={post._id} data={post} />
-              ))}
-            </div>
-          </>
-        ) : (
-          <EmptySearch />
-        )
+        <>
+          {data?.users.length > 0 ? (
+            <PeopleCard data={data?.users} />
+          ) : (
+            <NoPeopleFound />
+          )}
+          <div className="flex flex-col space-y-3">
+            {data?.posts.map((post: any) => (
+              <PostCard key={post._id} data={post} />
+            ))}
+          </div>
+        </>
       ) : (
         <EmptySearch />
       )}

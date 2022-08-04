@@ -42,7 +42,7 @@ const userSchema = new Schema(
         ref: "Post",
       },
     ],
-    friend: [
+    friends: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Friend",

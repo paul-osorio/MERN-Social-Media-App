@@ -145,6 +145,7 @@ const userSession = (req, res) => {
   if (req.user) {
     return res.status(200).json({
       message: "User is logged in",
+      id: req.user._id,
     });
   } else {
     return res.status(401).json({

@@ -5,12 +5,15 @@ const isAuthenticated = require("../middleware/authentication");
 
 const {
   AddFriend,
-  DeclineFriend,
+  RejectFriend,
   AcceptFriend,
+  GetFriend,
 } = require("../controller/friendController");
 
+router.get("/", isAuthenticated, GetFriend);
+
 router.post("/add", isAuthenticated, AddFriend);
-router.post("/decline", isAuthenticated, DeclineFriend);
+router.post("/reject", isAuthenticated, RejectFriend);
 router.post("/accept", isAuthenticated, AcceptFriend);
 
 module.exports = router;

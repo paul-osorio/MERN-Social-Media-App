@@ -1,9 +1,11 @@
 import useAvatar from "../../../../hooks/useAvatar";
 import useFullname from "../../../../hooks/useFullname";
+import Buttons from "./Buttons";
 
 const ProfileCard = ({ user }: { user: any }) => {
   const fullname = useFullname(user);
   const avatar = useAvatar(user);
+
   return (
     <div
       role="button"
@@ -20,11 +22,7 @@ const ProfileCard = ({ user }: { user: any }) => {
           <p className="leading-4 text-gray-400">{user?.email}</p>
         </div>
       </div>
-      <div>
-        <button className="bg-gray-700 py-1 px-5 hover:bg-gray-800 rounded-3xl text-white">
-          Add Friend
-        </button>
-      </div>
+      <Buttons user={user} />
     </div>
   );
 };

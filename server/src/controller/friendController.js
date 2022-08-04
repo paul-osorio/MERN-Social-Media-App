@@ -2,106 +2,135 @@ const UserModel = require("../models/users");
 const FriendModel = require("../models/friends");
 
 const AddFriend = async (req, res) => {
-  const recipientID = req.body.recipientID;
-  const requesterID = req.user._id;
+  const userID = req.user._id;
+  const friendID = req.body.friendID;
+
   try {
-    const friend = await FriendModel.findOne({
+    const exists = await FriendModel.findOne({
       $or: [
-        {
-          requester: requesterID,
-          recipient: recipientID,
-        },
-        {
-          requester: recipientID,
-          recipient: requesterID,
-        },
+        { requester: userID, recipient: friendID },
+        { requester: friendID, recipient: userID },
       ],
     });
-    if (friend) {
+
+    if (exists) {
       return res.status(400).json({
-        message: "You already have this friend",
+        status: exists.status,
       });
     } else {
-      const addFriend = await FriendModel.create({
-        requester: requesterID,
-        recipient: recipientID,
+      const newFriend = await FriendModel.create({
+        requester: userID,
+        recipient: friendID,
+        status: 0,
       });
 
-      if (addFriend) {
-        await UserModel.findByIdAndUpdate(recipientID, {
-          $push: {
-            friend: addFriend._id,
-          },
-        });
-
-        return res.status(200).json({
-          message: "You successfully added this friend",
-        });
-      }
-    }
-  } catch (err) {
-    res.status(500).json({
-      message: err.message,
-    });
-  }
-};
-
-const DeclineFriend = async (req, res) => {
-  const requesterID = req.body.requesterID;
-
-  try {
-    const friend = await FriendModel.findOneAndDelete({
-      requester: requesterID,
-      recipient: req.user._id,
-    });
-
-    if (friend) {
-      const userfriend = await UserModel.findByIdAndUpdate(requesterID, {
-        $pull: {
-          friend: friend._id,
-        },
+      //update user friend list
+      const user = await UserModel.findByIdAndUpdate(userID, {
+        $push: { friends: newFriend._id },
+      });
+      //update friend user list
+      const friend = await UserModel.findByIdAndUpdate(friendID, {
+        $push: { friends: newFriend._id },
       });
 
-      if (userfriend) {
-        return res.status(200).json({
-          message: "You successfully declined this friend",
-        });
-      }
-    } else {
-      return res.status(400).json({
-        message: "You don't have this friend",
+      return res.status(200).json({
+        message: "Friend request sent",
       });
     }
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       message: err.message,
     });
   }
 };
 
 const AcceptFriend = async (req, res) => {
-  const requesterID = req.body.requesterID;
+  const userID = req.user._id;
+  const friendID = req.body.friendID;
   try {
     const friend = await FriendModel.findOneAndUpdate(
       {
-        requester: requesterID,
-        recipient: req.user._id,
+        $or: [
+          { requester: userID, recipient: friendID },
+          { requester: friendID, recipient: userID },
+        ],
       },
       {
-        status: 3,
+        status: 1,
       }
     );
-    if (friend) {
-      return res.status(200).json({
-        message: "You successfully accepted this friend",
+    if (!friend) {
+      return res.status(400).json({
+        message: "No friend found",
       });
     } else {
-      return res.status(400).json({
-        message: "You don't have this friend",
+      return res.status(200).json({
+        message: "Friend found",
       });
     }
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
+const RejectFriend = async (req, res) => {
+  const userID = req.user._id;
+  const friendID = req.body.friendID;
+  try {
+    const friend = await FriendModel.findOneAndRemove({
+      $or: [
+        { requester: userID, recipient: friendID },
+        { requester: friendID, recipient: userID },
+      ],
+    });
+
+    if (friend) {
+      await UserModel.updateMany(
+        {
+          _id: { $in: [userID, friendID] },
+        },
+        {
+          $pull: { friends: friend._id },
+        }
+      );
+
+      return res.status(200).json({
+        message: "You have rejected this friend",
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
+const GetFriend = async (req, res) => {
+  const userID = req.user._id;
+  const friendId = req.query.friendID;
+
+  try {
+    const user = await FriendModel.findOne({
+      $or: [
+        { requester: userID, recipient: friendId },
+        { requester: friendId, recipient: userID },
+      ],
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "No friend found",
+      });
+    } else {
+      return res.status(200).json({
+        message: "Friend found",
+        friend: user,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
       message: err.message,
     });
   }
@@ -109,6 +138,7 @@ const AcceptFriend = async (req, res) => {
 
 module.exports = {
   AddFriend,
-  DeclineFriend,
+  RejectFriend,
   AcceptFriend,
+  GetFriend,
 };

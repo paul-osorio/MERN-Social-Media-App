@@ -14,7 +14,7 @@ const friendsSchema = new Schema(
       required: true,
     },
     status: {
-      type: String,
+      type: Number,
       enum: [
         0, //add friend
         1, //requested

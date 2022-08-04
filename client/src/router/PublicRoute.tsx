@@ -5,7 +5,7 @@ const PublicRoute = () => {
   /**
    * A public route is a route that is only accessible to unauthenticated users.
    */
-  const auth = useAuth();
+  const { auth } = useAuth();
   if (auth === null || auth === undefined) {
     return null;
   }

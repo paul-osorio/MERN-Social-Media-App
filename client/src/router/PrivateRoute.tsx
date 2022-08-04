@@ -5,7 +5,7 @@ const PrivateRoute = () => {
   /**
    * A private route is a route that is only accessible to authenticated users.
    */
-  const auth = useAuth();
+  const { auth } = useAuth();
 
   if (auth === null || auth === undefined) {
     return null;
