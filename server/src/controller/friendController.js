@@ -1,6 +1,8 @@
 const UserModel = require("../models/users");
 const FriendModel = require("../models/friends");
 
+const io = require("../config/socket-io.config").getIO();
+
 const AddFriend = async (req, res) => {
   const userID = req.user._id;
   const friendID = req.body.friendID;
@@ -24,13 +26,8 @@ const AddFriend = async (req, res) => {
         status: 0,
       });
 
-      //update user friend list
-      const user = await UserModel.findByIdAndUpdate(userID, {
-        $push: { friends: newFriend._id },
-      });
-      //update friend user list
-      const friend = await UserModel.findByIdAndUpdate(friendID, {
-        $push: { friends: newFriend._id },
+      io.emit("addFriend" + friendID, {
+        friendID: userID,
       });
 
       return res.status(200).json({
@@ -59,11 +56,29 @@ const AcceptFriend = async (req, res) => {
         status: 1,
       }
     );
+
     if (!friend) {
       return res.status(400).json({
         message: "No friend found",
       });
     } else {
+      io.emit("acceptFriend" + friendID, {
+        friendID: userID,
+      });
+
+      const userA = await UserModel.findById(userID);
+      const userB = await UserModel.findById(friendID);
+
+      userA.friends.push({
+        id: friendID,
+      });
+      userB.friends.push({
+        id: userID,
+      });
+
+      await userA.save();
+      await userB.save();
+
       return res.status(200).json({
         message: "Friend found",
       });
@@ -95,6 +110,10 @@ const RejectFriend = async (req, res) => {
           $pull: { friends: friend._id },
         }
       );
+
+      io.emit("rejectFriend" + friendID, {
+        friendID: userID,
+      });
 
       return res.status(200).json({
         message: "You have rejected this friend",
@@ -136,9 +155,38 @@ const GetFriend = async (req, res) => {
   }
 };
 
+const GetMyFriends = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.user._id).select("-password");
+
+    if (!user) {
+      return res.status(400).json({
+        message: "No friend found",
+      });
+    } else {
+      const friendList = [];
+      for (let i = 0; i < user.friends.length; i++) {
+        const friend = await UserModel.findById(user.friends[i].id).select(
+          "nameLast nameFirst email friends avatar profile"
+        );
+        friendList.push(friend);
+      }
+
+      return res.status(200).json({
+        message: "Friend found",
+        friends: friendList,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    });
+  }
+};
 module.exports = {
   AddFriend,
   RejectFriend,
   AcceptFriend,
   GetFriend,
+  GetMyFriends,
 };

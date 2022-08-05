@@ -21,5 +21,5 @@ export default ({ src, placeholderImg, ...props }: ImageProps) => {
     };
   }, [src, onLoad]);
 
-  return <img {...props} alt={imgSrc} src={imgSrc} />;
+  return <img {...props} alt={imgSrc} src={imgSrc} loading="lazy" />;
 };

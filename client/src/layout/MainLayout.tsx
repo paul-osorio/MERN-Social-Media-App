@@ -1,6 +1,8 @@
+import { AnimatePresence } from "framer-motion";
 import { Outlet } from "react-router-dom";
+import NewMessage from "../components/modal/NewMessage";
 import { Messages, Navbar } from "../components/ui";
-import { MessageProvider } from "../context/MessageContext";
+import { MessageContext, MessageProvider } from "../context/MessageContext";
 
 const MainLayout = () => {
   return (
@@ -10,7 +12,16 @@ const MainLayout = () => {
         <Outlet />
       </div>
       <MessageProvider>
-        <Messages />
+        <MessageContext.Consumer>
+          {(context) => (
+            <>
+              <Messages />
+              <AnimatePresence>
+                {context.openNewMessage && <NewMessage />}
+              </AnimatePresence>
+            </>
+          )}
+        </MessageContext.Consumer>
       </MessageProvider>
     </>
   );

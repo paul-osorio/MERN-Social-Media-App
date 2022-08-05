@@ -1,6 +1,18 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const FriendSchema = new Schema(
+  {
+    id: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const userSchema = new Schema(
   {
     nameFirst: {
@@ -42,12 +54,7 @@ const userSchema = new Schema(
         ref: "Post",
       },
     ],
-    friends: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Friend",
-      },
-    ],
+    friends: [FriendSchema],
   },
   {
     timestamps: true,

@@ -1,11 +1,28 @@
 import { useRef } from "react";
 import { useCreatePost } from "../../../../context/CreatePostContext";
+import Resizer from "react-image-file-resizer";
 
 const Options = () => {
   const imageRef = useRef<any>();
   const { setImages, images, setImageWarning } = useCreatePost();
 
-  const onChange = (e: any) => {
+  const resizeFile = (file: any) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        2000,
+        2000,
+        "JPEG",
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "blob"
+      );
+    });
+
+  const onChange = async (e: any) => {
     const files = e.target.files;
     if (files) {
       if (images.length + files.length > 4) {
@@ -13,10 +30,11 @@ const Options = () => {
       } else {
         setImageWarning(false);
         //map through the files and create a new image object for each
-        Array.from(files).map((file: any, index) => {
+        Array.from(files).map(async (file: any, index) => {
+          const resized: any = await resizeFile(file);
           setImages((prevImages: any) => [
             ...prevImages,
-            { id: btoa(index + "" + Date.now()), file },
+            { id: btoa(index + "" + Date.now()), file: resized },
           ]);
         });
       }

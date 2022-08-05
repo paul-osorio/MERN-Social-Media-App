@@ -6,7 +6,7 @@ const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const { Server } = require("http");
+const http = require("http");
 const {
   port,
   corsOptions,
@@ -14,9 +14,7 @@ const {
   connectDB,
 } = require("./config/server.config");
 
-const server = new Server(app, {
-  cors: corsOptions,
-});
+const server = http.createServer(app);
 
 /**
  * Call passport local strategy
@@ -43,11 +41,26 @@ app.use(session(sessionMiddleware));
  */
 app.use(passport.initialize());
 app.use(passport.session());
+/**
+ * Initiate socket io from config
+ */
+
+const sio = require("./config/socket-io.config");
+sio.init(server, {
+  cors: corsOptions,
+});
 
 /**
  * Use routes from routes.js
  */
 app.use("/api/v1/", require("./main_routes"));
+
+sio.getIO().on("connection", (socket) => {
+  console.log("New client connected");
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
 
 /**
  * Start server using enviroment variable

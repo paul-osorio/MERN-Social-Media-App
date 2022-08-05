@@ -8,8 +8,9 @@ const {
   RejectFriend,
   AcceptFriend,
   GetFriend,
+  GetMyFriends,
 } = require("../controller/friendController");
-
+router.get("/all", isAuthenticated, GetMyFriends);
 router.get("/", isAuthenticated, GetFriend);
 
 router.post("/add", isAuthenticated, AddFriend);

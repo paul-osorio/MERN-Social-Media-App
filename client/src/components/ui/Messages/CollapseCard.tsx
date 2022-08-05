@@ -1,9 +1,13 @@
 import { useMessageContext } from "../../../context/MessageContext";
 
 const CollapseCard = () => {
-  const { isOpen, setIsOpen } = useMessageContext();
+  const { isOpen, setIsOpen, setOpenNewMessage } = useMessageContext();
   const openMessages = () => {
     setIsOpen(!isOpen);
+  };
+
+  const openNewMessage = () => {
+    setOpenNewMessage(true);
   };
 
   return (
@@ -13,16 +17,27 @@ const CollapseCard = () => {
           <i className="fad mr-2 fa-envelope"></i>
           <span className="text-gray-800">Messages</span>
         </span>
-        <button
-          onClick={openMessages}
-          className="h-10 w-10 hover:bg-gray-100 rounded-full"
-        >
-          {isOpen ? (
-            <i className="fas fa-angle-down"></i>
-          ) : (
-            <i className="fas fa-angle-up"></i>
-          )}
-        </button>
+        <div className="flex items-center">
+          <button
+            onClick={openNewMessage}
+            className="h-10 w-10 hover:bg-gray-100 rounded-full"
+          >
+            <span className="material-icons-outlined text-lg text-gray-700">
+              add_box
+            </span>
+          </button>
+
+          <button
+            onClick={openMessages}
+            className="h-10 w-10 hover:bg-gray-100 rounded-full"
+          >
+            {isOpen ? (
+              <i className="fas fa-angle-down"></i>
+            ) : (
+              <i className="fas fa-angle-up"></i>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

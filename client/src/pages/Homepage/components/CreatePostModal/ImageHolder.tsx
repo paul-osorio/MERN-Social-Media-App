@@ -23,7 +23,12 @@ const ImageHolder = ({ image, id }: ImageHolderInterface) => {
       >
         <span className="material-icons text-white text-lg">close</span>
       </div>
-      <img className="w-full h-full object-cover" src={image} alt="image" />
+      <img
+        className="w-full h-full object-cover"
+        src={image}
+        alt="image"
+        loading="lazy"
+      />
     </div>
   );
 };

@@ -18,3 +18,7 @@ export function AcceptFriend(friendID: any) {
 export function getFriend(friendID: any) {
   return axiosInstance.get("/friend", { params: { friendID } });
 }
+
+export function getAllFriends() {
+  return axiosInstance.get("/friend/all");
+}

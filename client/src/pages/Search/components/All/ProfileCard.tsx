@@ -5,10 +5,11 @@ import Buttons from "../People/Buttons";
 const ProfileCard = ({ user }: { user: any }) => {
   const fullname = useFullname(user);
   const avatar = useAvatar(user);
+
   return (
     <div
       role="button"
-      className="p-5 flex items-center justify-between hover:bg-gray-100 rounded-3xl"
+      className="p-5 flex items-center justify-between hover:bg-gray-50 rounded-3xl"
     >
       <div className="flex items-center space-x-4">
         <img

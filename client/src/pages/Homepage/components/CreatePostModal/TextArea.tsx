@@ -12,7 +12,7 @@ const TextArea = () => {
   };
 
   return (
-    <div className="">
+    <div>
       <TextareaAutosize
         onChange={onChange}
         placeholder="What's happening?"

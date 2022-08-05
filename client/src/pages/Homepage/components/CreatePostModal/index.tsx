@@ -31,7 +31,7 @@ const CreatePostModal = ({ handleClose }: ICreatePostModal) => {
               </div>
               <hr />
 
-              <div className="min-h-[50px] max-h-[22rem] overflow-auto">
+              <div className="min-h-[50px] max-h-[22rem] flex flex-col overflow-auto createpost-scrollbar">
                 <TextArea />
                 {context.images.length > 0 && <Images />}
               </div>
