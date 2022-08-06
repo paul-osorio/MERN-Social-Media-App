@@ -2,18 +2,28 @@
 import { useMessageContext } from "../../../context/MessageContext";
 import useAvatar from "../../../hooks/useAvatar";
 import useFullname from "../../../hooks/useFullname";
+import { createConvo } from "../../../lib/message";
 
 const ProfileCard = ({ friend }: { friend: any }) => {
-  const { setIsOpen, setReceiverID, setOpenNewMessage } = useMessageContext();
+  const { setIsOpen, setRoomID, setOpenNewMessage, setReceiver } =
+    useMessageContext();
   const avatar = useAvatar(friend);
   const fullname = useFullname(friend);
 
-  const onClick = () => {
+  const onClick = async () => {
     setOpenNewMessage(false);
     setIsOpen(true);
-    setReceiverID(friend._id);
+
+    try {
+      const response = await createConvo(friend._id);
+      const roomID = response.data.roomID;
+
+      setRoomID(roomID);
+      setReceiver(friend._id);
+    } catch (err) {
+      console.log(err);
+    }
   };
-  console.log(friend._id);
 
   return (
     <div

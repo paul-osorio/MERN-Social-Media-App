@@ -6,7 +6,6 @@ const InboxProfileCard = ({ message }: { message: any }) => {
   const fullname = useFullname(message?.participant);
   const avatar = useAvatar(message?.participant);
   // const lastMessage = message?.lastMessageType + message?.lastMessage;
-  console.log(message);
   return (
     <div
       role="button"

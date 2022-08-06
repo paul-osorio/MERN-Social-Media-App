@@ -1,9 +1,9 @@
 import { useMessageContext } from "../../../context/MessageContext";
 
 const ReceiverCard = () => {
-  const { isOpen, setIsOpen, setReceiverID } = useMessageContext();
+  const { isOpen, setIsOpen, setRoomID } = useMessageContext();
   const openMessages = () => setIsOpen(!isOpen);
-  const changereceiverID = () => setReceiverID("");
+  const changereceiverID = () => setRoomID("");
 
   return (
     <div className=" border-b h-16 ">

@@ -77,21 +77,22 @@ export default (user: any) => {
   };
 
   useLayoutEffect(() => {
-    socket.on("addFriend" + user?.myId, (data: any) => {
-      if (user?._id === data?.friendID) {
+    socket.on("addFriend", (data: any) => {
+      if (user?.myId === data.to && user?._id === data.from) {
         setStatus("Accept");
       }
     });
-    socket.on("rejectFriend" + user?.myId, (data: any) => {
-      if (user?._id === data?.friendID) {
-        setStatus("Add Friend");
-      }
-    });
-    socket.on("acceptFriend" + user?.myId, (data: any) => {
-      if (user?._id === data?.friendID) {
+    socket.on("acceptFriend", (data: any) => {
+      if (user?.myId === data.to && user?._id === data.from) {
         setStatus("Message");
       }
     });
+    socket.on("rejectFriend", (data: any) => {
+      if (user?.myId === data.to && user?._id === data.from) {
+        setStatus("Add Friend");
+      }
+    });
+
     initialStatus();
   }, []);
 

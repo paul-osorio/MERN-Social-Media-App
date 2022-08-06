@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import { useAuth } from "./hooks";
 import BodyLayout from "./layout/BodyLayout";
 import MainLayout from "./layout/MainLayout";
 import Homepage from "./pages/Homepage";
@@ -9,6 +11,7 @@ import SignUp from "./pages/SignUp";
 import SuccessRegister from "./pages/SuccessRegister";
 import { EmailSessionRoute, PrivateRoute } from "./router";
 import PublicRoute from "./router/PublicRoute";
+import socket from "./lib/socketClient";
 
 function App() {
   return (

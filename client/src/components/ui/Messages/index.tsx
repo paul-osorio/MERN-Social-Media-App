@@ -2,16 +2,21 @@ import { useMessageContext } from "../../../context/MessageContext";
 import CollapseCard from "./CollapseCard";
 import { AnimatePresence, motion } from "framer-motion";
 import useOnClickOutside from "../../../hooks/useOnClickOutside";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import ReceiverCard from "./ReceiverCard";
 import Inbox from "./Inbox";
 import Message from "./Message";
+import { useAppContext } from "../../../context/AppProvider";
+import { useAuth } from "../../../hooks";
 
 const Messages = () => {
-  const { isOpen, setIsOpen, receiverID } = useMessageContext();
+  const { user } = useAuth();
+  const { isOpen, setIsOpen, roomID } = useMessageContext();
+  const { socket } = useAppContext();
   const ref = useRef<any>();
 
   useOnClickOutside(ref, () => setIsOpen(false));
+
   return (
     <motion.div
       ref={ref}
@@ -25,8 +30,8 @@ const Messages = () => {
       }}
       className="bg-white fixed bottom-0 right-2 shadow-dark  rounded-t-3xl"
     >
-      {receiverID ? <ReceiverCard /> : <CollapseCard />}
-      {isOpen ? receiverID ? <Message /> : <Inbox /> : null}
+      {roomID ? <ReceiverCard /> : <CollapseCard />}
+      {isOpen ? roomID ? <Message /> : <Inbox /> : null}
     </motion.div>
   );
 };

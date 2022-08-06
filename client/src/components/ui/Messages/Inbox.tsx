@@ -18,9 +18,9 @@ const Inbox = () => {
         width: "420px",
       }}
     >
-      {inbox.map((message: any) => (
+      {/* {inbox.map((message: any) => (
         <InboxProfileCard message={message} key={message.id} />
-      ))}
+      ))} */}
     </div>
   );
 };

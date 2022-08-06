@@ -26,8 +26,9 @@ const AddFriend = async (req, res) => {
         status: 0,
       });
 
-      io.emit("addFriend" + friendID, {
-        friendID: userID,
+      io.emit("addFriend", {
+        from: userID,
+        to: friendID,
       });
 
       return res.status(200).json({
@@ -62,8 +63,9 @@ const AcceptFriend = async (req, res) => {
         message: "No friend found",
       });
     } else {
-      io.emit("acceptFriend" + friendID, {
-        friendID: userID,
+      io.emit("acceptFriend", {
+        from: userID,
+        to: friendID,
       });
 
       const userA = await UserModel.findById(userID);
@@ -111,8 +113,9 @@ const RejectFriend = async (req, res) => {
         }
       );
 
-      io.emit("rejectFriend" + friendID, {
-        friendID: userID,
+      io.emit("rejectFriend", {
+        from: userID,
+        to: friendID,
       });
 
       return res.status(200).json({

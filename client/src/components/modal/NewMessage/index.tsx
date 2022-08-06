@@ -62,7 +62,7 @@ const NewMessage = () => {
                 );
               })
               .map((friend: any) => {
-                return <ProfileCard key={friend.id} friend={friend} />;
+                return <ProfileCard key={friend._id} friend={friend} />;
               })
           ) : (
             <div className="text-center text-gray-800">No results found </div>

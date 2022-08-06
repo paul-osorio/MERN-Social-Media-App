@@ -1,5 +1,7 @@
 import PostContainer from "./components/PostContainer";
 
+import { useAuth } from "../../hooks";
+
 const Homepage = () => {
   return (
     <div className="grid grid-cols-5 w-full gap-x-2">

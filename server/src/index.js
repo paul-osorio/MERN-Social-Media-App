@@ -6,7 +6,9 @@ const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const http = require("http");
+const { createServer } = require("http");
+const MongoStore = require("connect-mongo");
+
 const {
   port,
   corsOptions,
@@ -14,7 +16,9 @@ const {
   connectDB,
 } = require("./config/server.config");
 
-const server = http.createServer(app);
+const server = createServer(app);
+
+const expressSession = session(sessionMiddleware);
 
 /**
  * Call passport local strategy
@@ -34,7 +38,7 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(session(sessionMiddleware));
+app.use(expressSession);
 
 /**
  * Initialize passport middleware
@@ -50,15 +54,46 @@ sio.init(server, {
   cors: corsOptions,
 });
 
+const io = sio.getIO();
+
 /**
  * Use routes from routes.js
  */
 app.use("/api/v1/", require("./main_routes"));
 
-sio.getIO().on("connection", (socket) => {
-  console.log("New client connected");
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
+const onConnection = require("./socketHandlers");
+
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  socket.on("setup", (data) => {
+    socket.join(data);
+    socket.emit("connected");
+  });
+
+  socket.on("join chat", (room) => {
+    socket.join(room);
+    console.log("User Joined Room: " + room);
+  });
+
+  socket.on("typing", (room) => socket.in(room).emit("typing"));
+  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
+
+  socket.on("new message", (data) => {
+    data.data.participants.forEach((participant) => {
+      if (participant === data.data.lastMessage.sender) {
+        return;
+      }
+      io.in(participant).emit("message received", {
+        lastMessage: data.data.lastMessage,
+        roomID: data.roomID,
+      });
+    });
+  });
+
+  socket.off("setup", () => {
+    console.log("USER DISCONNECTED");
+    socket.leave(data);
   });
 });
 
