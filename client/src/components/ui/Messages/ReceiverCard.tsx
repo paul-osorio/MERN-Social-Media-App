@@ -1,25 +1,37 @@
 import { useMessageContext } from "../../../context/MessageContext";
+import useAvatar from "../../../hooks/useAvatar";
+import useFullname from "../../../hooks/useFullname";
 
 const ReceiverCard = () => {
-  const { isOpen, setIsOpen, setRoomID } = useMessageContext();
+  const { isOpen, setIsOpen, setRoomID, receiver } = useMessageContext();
   const openMessages = () => setIsOpen(!isOpen);
-  const changereceiverID = () => setRoomID("");
+  const changeroomID = () => setRoomID("");
+
+  const fullname = useFullname(receiver);
+  const avatar = useAvatar(receiver);
 
   return (
     <div className=" border-b h-16 ">
-      <div className="flex items-center h-full px-5 font-medium justify-between">
-        <div className="flex items-center space-x-2">
+      <div className="flex items-center h-full px-5  justify-between">
+        <div className="flex items-center space-x-2 h-full">
           {isOpen && (
             <button
-              onClick={changereceiverID}
+              onClick={changeroomID}
               className="h-10 w-10 flex items-center justify-center hover:bg-gray-100 rounded-full"
             >
               <i className="fas fa-long-arrow-left"></i>
             </button>
           )}
-          <div className="flex flex-col">
-            <span className="text-gray-800 leading-3">Hey</span>
-            <span className="text-gray-500 text-sm">Hey</span>
+          <img
+            src={avatar}
+            className="h-10 w-10 rounded-full object-cover"
+            alt=""
+          />
+          <div className="flex flex-col ">
+            <span className="text-gray-800 leading-3 font-medium">
+              {fullname}
+            </span>
+            <span className="text-gray-400 text-sm ">{receiver?.email}</span>
           </div>
         </div>
 

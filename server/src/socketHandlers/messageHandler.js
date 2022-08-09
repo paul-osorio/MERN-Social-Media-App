@@ -1,72 +1,35 @@
-const ConversationModel = require("../models/conversation");
+// const ConversationModel = require("../models/conversation");
 
-module.exports = (io) => {
-  const sendMessage = async function (payload) {
-    const { from, to, message } = payload;
+module.exports.respond = (io, socket) => {
+  console.log("A user connected to chat");
 
-    try {
-      const conversation = await ConversationModel.findOne({
-        participants: { $all: [to, from] },
-      });
+  socket.on("setup", (data) => {
+    socket.join(data);
+    socket.emit("connected");
+  });
 
-      if (!conversation) {
-        const newConversation = new ConversationModel({
-          participants: [from, to],
-        });
+  socket.on("join chat", (room) => {
+    socket.join(room);
+    console.log("User Joined Room: " + room);
+  });
 
-        newConversation.messages.push({
-          sender: from,
-          content: message,
-        });
+  socket.on("typing", (room) => socket.in(room).emit("typing"));
+  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
-        await newConversation.save();
-
-        io.to(newConversation._id).emit(`message${to}`, {
-          from,
-          message,
-        });
-      } else {
-        conversation.messages.push({
-          sender: from,
-          content: message,
-        });
-        await conversation.save();
-
-        io.to(conversation._to).emit(`message${to}`, {
-          from,
-          message,
-        });
+  socket.on("new message", (data) => {
+    data.data.participants.forEach((participant) => {
+      if (participant === data.data.lastMessage.sender) {
+        return;
       }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const createRoom = async function (payload) {
-    const { from, to } = payload;
-
-    try {
-      const conversation = await ConversationModel.findOne({
-        participants: { $all: [to, from] },
+      io.in(participant).emit("message received", {
+        lastMessage: data.data.lastMessage,
+        roomID: data.roomID,
       });
+    });
+  });
 
-      if (!conversation) {
-        const newConversation = new ConversationModel({
-          participants: [from, to],
-        });
-
-        await newConversation.save();
-        io.join(newConversation._id);
-      }
-
-      io.join(conversation._id);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  return {
-    sendMessage,
-    createRoom,
-  };
+  socket.off("setup", () => {
+    console.log("USER DISCONNECTED");
+    socket.leave(data);
+  });
 };

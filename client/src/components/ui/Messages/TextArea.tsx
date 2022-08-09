@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import ReactTextareaAutosize from "react-textarea-autosize";
+import { useAppContext } from "../../../context/AppProvider";
 import { useMessageContext } from "../../../context/MessageContext";
 import { sendMessage } from "../../../lib/message";
 import "./style.css";
-
-import { useAuth } from "../../../hooks";
-import { useAppContext } from "../../../context/AppProvider";
 
 interface ITextArea {
   typing?: boolean;
@@ -20,20 +18,24 @@ const TextArea = ({
   setTyping,
   socketConnected,
   scrollToBottom,
-  inView,
 }: ITextArea) => {
-  const { socket, user } = useAppContext();
   const [isFocused, setIsFocused] = useState(false);
-  const ref = useRef<any>();
-  const { setMessage, setMessages, messages, message, roomID, receiver } =
-    useMessageContext();
+  const {
+    setMessage,
+    setMessages,
+    messages,
+    message,
+    roomID,
+    receiver,
+    socket,
+  } = useMessageContext();
 
   const onSendMessage = async (evt: any) => {
     if (evt.keyCode == 13 && !evt.shiftKey) {
       evt.preventDefault();
 
       if (message) {
-        socket.emit("stop typing", roomID);
+        socket.emit("stop typing", receiver?._id);
 
         try {
           const { data } = await sendMessage({
@@ -54,6 +56,11 @@ const TextArea = ({
     }
   };
 
+  const stopTyping = () => {
+    socket.emit("stop typing", receiver?._id);
+    setTyping(false);
+  };
+
   const typingHandler = (e: any) => {
     setMessage(e.target.value);
 
@@ -61,22 +68,19 @@ const TextArea = ({
 
     if (!typing) {
       setTyping(true);
-      socket.emit("typing", receiver);
+      socket.emit("typing", receiver?._id);
     }
 
-    let lastTypingTime = new Date().getTime();
-    var timerLength = 3000;
+    var lastTypingtime = new Date().getTime();
+    //keep typing on as long as the user is typing
 
     setTimeout(() => {
-      var timeNow = new Date().getTime();
-
-      var timeDiff = timeNow - lastTypingTime;
-
-      if (timeDiff >= timerLength && typing) {
-        socket.emit("stop typing", receiver);
-        setTyping(false);
+      var typingTimer = new Date().getTime();
+      var timeDiff = typingTimer - lastTypingtime;
+      if (timeDiff >= 3000 && typing) {
+        stopTyping();
       }
-    }, timerLength);
+    }, 3000);
   };
 
   return (

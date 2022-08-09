@@ -1,4 +1,7 @@
 import { createContext, useContext, useState } from "react";
+import io from "socket.io-client";
+
+const socket = io(import.meta.env.VITE_APP_BASE_URL + "/chat");
 
 interface IMessageContext {
   isOpen: boolean;
@@ -13,6 +16,9 @@ interface IMessageContext {
   setMessages: (messages: any[]) => void;
   receiver: any;
   setReceiver: (receiver: any) => void;
+  fetchAgain: boolean;
+  setFetchAgain: (fetchAgain: boolean) => void;
+  socket: any;
 }
 
 interface IMessageProvider {
@@ -30,8 +36,11 @@ export const MessageContext = createContext<IMessageContext>({
   setOpenNewMessage: () => {},
   messages: [],
   setMessages: () => {},
-  receiver: "",
+  receiver: null,
   setReceiver: () => {},
+  fetchAgain: false,
+  setFetchAgain: () => {},
+  socket: null,
 });
 
 export const MessageProvider = ({ children }: IMessageProvider) => {
@@ -40,7 +49,8 @@ export const MessageProvider = ({ children }: IMessageProvider) => {
   const [roomID, setRoomID] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<any[]>([]);
-  const [receiver, setReceiver] = useState<any>("");
+  const [receiver, setReceiver] = useState<any>(null);
+  const [fetchAgain, setFetchAgain] = useState(false);
 
   const values: IMessageContext = {
     isOpen,
@@ -55,6 +65,9 @@ export const MessageProvider = ({ children }: IMessageProvider) => {
     setMessages,
     receiver,
     setReceiver,
+    fetchAgain,
+    setFetchAgain,
+    socket,
   };
 
   return (

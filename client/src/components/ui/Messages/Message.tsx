@@ -3,16 +3,15 @@ import TextArea from "./TextArea";
 import { useMessageContext } from "../../../context/MessageContext";
 import { getMessages } from "../../../lib/message";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import socket from "../../../lib/socketClient";
-import { useAppContext } from "../../../context/AppProvider";
 import useInView from "../../../hooks/useInView";
 import Typing from "./Typing";
+import { useAppContext } from "../../../context/AppProvider";
 
 const Message = () => {
-  const { messages, setMessages, roomID, receiver } = useMessageContext();
   const { user } = useAppContext();
-  const bottomRef = useRef<any>(null);
-  const scrollRef = useRef<any>(null);
+  const { messages, setMessages, roomID, receiver, socket } =
+    useMessageContext();
+  const bottomRef = useRef<any>();
   const firstRender = useRef(true);
   const inView = useInView(bottomRef);
   const [typing, setTyping] = useState(false);
@@ -33,17 +32,20 @@ const Message = () => {
   };
 
   const scrollToBottom = () => {
-    setTimeout(() => {
-      bottomRef.current.scrollIntoView(true);
-    });
+    bottomRef.current?.scrollIntoView();
   };
 
-  useEffect(() => {
-    if (inView) scrollToBottom();
+  useLayoutEffect(() => {
+    if (firstRender.current) {
+      if (inView) scrollToBottom();
+    } else {
+      scrollToBottom();
+    }
   }, [messages]);
 
   useEffect(() => {
     socket.emit("setup", user?._id);
+
     socket.on("connected", () => {
       setSocketConnected(true);
     });
@@ -59,9 +61,15 @@ const Message = () => {
   }, [roomID]);
 
   useEffect(() => {
-    socket.on("message received", (data: any) => {
-      if (roomID !== data.roomID) return;
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
 
+    socket.on("message received", (data: any) => {
+      if (roomID !== data.roomID || !roomID) {
+        return;
+      }
       setMessages([...messages, data.lastMessage]);
     });
   });
@@ -73,18 +81,18 @@ const Message = () => {
         height: "calc(500px - 64px)",
       }}
     >
-      <div ref={scrollRef} className="h-full w-full  overflow-auto">
+      <div className="h-full w-full  overflow-auto">
         {messages.map((message) => (
           <MessageCard
-            isMine={message.sender !== receiver}
-            message={message.content}
+            isMine={message.sender !== receiver?._id}
+            message={message}
             key={message._id}
           />
         ))}
 
         {isTyping ? <Typing /> : ""}
 
-        <div ref={bottomRef} />
+        <div ref={bottomRef} className="h-2" />
       </div>
 
       <div className="flex items-center p-2 py-3 bg-white border-t">

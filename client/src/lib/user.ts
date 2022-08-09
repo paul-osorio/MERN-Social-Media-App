@@ -22,3 +22,7 @@ export function getFriend(friendID: any) {
 export function getAllFriends() {
   return axiosInstance.get("/friend/all");
 }
+
+export function getUserPartialDetails(data: any) {
+  return axiosInstance.post("/user/partial", data);
+}

@@ -1,7 +1,7 @@
 const UserModel = require("../models/users");
 const FriendModel = require("../models/friends");
 
-const io = require("../config/socket-io.config").getIO();
+// const io = require("../config/socket-io.config").getIO();
 
 const AddFriend = async (req, res) => {
   const userID = req.user._id;
@@ -26,10 +26,10 @@ const AddFriend = async (req, res) => {
         status: 0,
       });
 
-      io.emit("addFriend", {
-        from: userID,
-        to: friendID,
-      });
+      // io.emit("addFriend", {
+      //   from: userID,
+      //   to: friendID,
+      // });
 
       return res.status(200).json({
         message: "Friend request sent",
@@ -63,10 +63,10 @@ const AcceptFriend = async (req, res) => {
         message: "No friend found",
       });
     } else {
-      io.emit("acceptFriend", {
-        from: userID,
-        to: friendID,
-      });
+      // io.emit("acceptFriend", {
+      //   from: userID,
+      //   to: friendID,
+      // });
 
       const userA = await UserModel.findById(userID);
       const userB = await UserModel.findById(friendID);
@@ -113,10 +113,10 @@ const RejectFriend = async (req, res) => {
         }
       );
 
-      io.emit("rejectFriend", {
-        from: userID,
-        to: friendID,
-      });
+      // io.emit("rejectFriend", {
+      //   from: userID,
+      //   to: friendID,
+      // });
 
       return res.status(200).json({
         message: "You have rejected this friend",

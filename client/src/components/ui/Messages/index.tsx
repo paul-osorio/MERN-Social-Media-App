@@ -10,9 +10,8 @@ import { useAppContext } from "../../../context/AppProvider";
 import { useAuth } from "../../../hooks";
 
 const Messages = () => {
-  const { user } = useAuth();
-  const { isOpen, setIsOpen, roomID } = useMessageContext();
-  const { socket } = useAppContext();
+  const { isOpen, setIsOpen, roomID, socket } = useMessageContext();
+  const { user } = useAppContext();
   const ref = useRef<any>();
 
   useOnClickOutside(ref, () => setIsOpen(false));

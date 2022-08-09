@@ -49,52 +49,34 @@ app.use(passport.session());
  * Initiate socket io from config
  */
 
-const sio = require("./config/socket-io.config");
-sio.init(server, {
+// const sio = require("./config/socket-io.config");
+// sio.init(server, {
+//   cors: corsOptions,
+// });
+
+// const io = sio.getIO();
+
+const socket = require("socket.io");
+
+const io = socket(server, {
   cors: corsOptions,
 });
-
-const io = sio.getIO();
 
 /**
  * Use routes from routes.js
  */
 app.use("/api/v1/", require("./main_routes"));
 
-const onConnection = require("./socketHandlers");
+// const onConnection = require("./socketHandlers");
+const messageNamespace = require("./socketHandlers/messageHandler");
+const globalNamespace = require("./socketHandlers/globalHandler");
 
-io.on("connection", (socket) => {
-  console.log("A user connected");
+var chat = io.of("/chat").on("connection", (socket) => {
+  messageNamespace.respond(chat, socket);
+});
 
-  socket.on("setup", (data) => {
-    socket.join(data);
-    socket.emit("connected");
-  });
-
-  socket.on("join chat", (room) => {
-    socket.join(room);
-    console.log("User Joined Room: " + room);
-  });
-
-  socket.on("typing", (room) => socket.in(room).emit("typing"));
-  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
-
-  socket.on("new message", (data) => {
-    data.data.participants.forEach((participant) => {
-      if (participant === data.data.lastMessage.sender) {
-        return;
-      }
-      io.in(participant).emit("message received", {
-        lastMessage: data.data.lastMessage,
-        roomID: data.roomID,
-      });
-    });
-  });
-
-  socket.off("setup", () => {
-    console.log("USER DISCONNECTED");
-    socket.leave(data);
-  });
+var main = io.on("connection", (socket) => {
+  globalNamespace.respond(main, socket);
 });
 
 /**

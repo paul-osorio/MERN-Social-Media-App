@@ -12,6 +12,7 @@ import SuccessRegister from "./pages/SuccessRegister";
 import { EmailSessionRoute, PrivateRoute } from "./router";
 import PublicRoute from "./router/PublicRoute";
 import socket from "./lib/socketClient";
+import { useAppContext } from "./context/AppProvider";
 
 function App() {
   return (

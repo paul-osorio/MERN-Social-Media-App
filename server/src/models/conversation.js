@@ -8,6 +8,7 @@ const MessageSchema = new Schema(
       ref: "User",
     },
     content: { type: String, required: true },
+    isRead: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
