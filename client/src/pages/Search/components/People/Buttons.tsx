@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import useFriendStatus from "../../../../hooks/useFriendStatus";
-import socket from "../../../../lib/socketClient";
 
 const Buttons = ({ user }: { user: any }) => {
   const {

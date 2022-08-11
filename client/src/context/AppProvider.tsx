@@ -3,8 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserDetails } from "../lib/user";
 import { useSearchParams } from "react-router-dom";
 import io from "socket.io-client";
-import { userSession } from "../lib/auth";
-import { useAuth } from "../hooks";
+const socket = io(import.meta.env.VITE_APP_BASE_URL);
 
 interface AppProps {
   user: any;
@@ -12,6 +11,8 @@ interface AppProps {
   setSearchQuery: (query: any) => void;
   socket: any;
   onlineUsers: any[];
+  sharePost: any;
+  setSharePost: (post: any) => void;
 }
 
 export const AppContext = createContext<AppProps>({
@@ -20,19 +21,20 @@ export const AppContext = createContext<AppProps>({
   setSearchQuery: (query: any) => {},
   socket: null,
   onlineUsers: [],
+  sharePost: null,
+  setSharePost: (post: any) => {},
 });
 
 const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q"));
   const [onlineUsers, setOnlineUsers] = useState<any[]>([]);
+  const [sharePost, setSharePost] = useState<any>("");
 
   const { data: user } = useQuery(["userDetails"], async () => {
     const response = await getUserDetails();
     return response.data;
   });
-
-  const socket = io(import.meta.env.VITE_APP_BASE_URL);
 
   useEffect(() => {
     if (user) {
@@ -40,12 +42,10 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
         socket.emit("status", user._id);
 
         socket.on("online", (data: any) => {
-          // setOnlineUsers((prevState) => [...prevState, data]);
           setOnlineUsers(data);
         });
 
         socket.on("offline", (data: any) => {
-          // Remove user from online users list
           setOnlineUsers(data);
         });
       });
@@ -58,6 +58,8 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
     setSearchQuery,
     socket,
     onlineUsers,
+    sharePost,
+    setSharePost,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

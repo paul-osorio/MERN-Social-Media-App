@@ -2,7 +2,6 @@ import ProfileCard from "./ProfileCard";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { searchPeople } from "../../../../lib/search";
-import NoPeopleFound from "../All/NoPeopleFound";
 import EmptySearch from "../EmptySearch";
 
 export default () => {

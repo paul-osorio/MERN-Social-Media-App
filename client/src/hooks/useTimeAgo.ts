@@ -25,13 +25,13 @@ const useTimeAgo = (time?: any) => {
       return `${minutes}m`;
     }
     return `${hours}h`;
-  } else if (days > 1 && days < 2) {
+  } else if (days < 1) {
     return "Yesterday";
-  } else if (days > 2 && days < 7) {
+  } else if (days > 1) {
     return `${days}d`;
-  } else if (weeks >= 1 && weeks < 4) {
+  } else if (weeks < 4) {
     return `${weeks}w`;
-  } else if (months >= 1 && months < 12) {
+  } else if (months < 12) {
     return timeStore.format("MMM DD");
   } else {
     return timeStore.format("MMM DD, YYYY");

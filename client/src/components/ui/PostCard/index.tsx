@@ -1,5 +1,7 @@
+import ShareProvider, { ShareContext } from "../../../context/ShareContext";
+import SharePost from "../../modal/SharePost";
 import Body from "./Body";
-import Options from "./Options";
+import OptionsCard from "./Bottom";
 import TopName from "./TopName";
 
 interface IPostCard {
@@ -10,8 +12,8 @@ const PostCard = ({ data }: IPostCard) => {
     <div className="w-full bg-white rounded-3xl shadow">
       <div className="p-5 flex flex-col space-y-2">
         <TopName author={data?.user} timestamp={data?.createdAt} />
-        <Body content={data?.content} images={data?.images} />
-        <Options />
+        <Body data={data} />
+        <OptionsCard data={data} />
       </div>
     </div>
   );

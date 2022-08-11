@@ -1,6 +1,4 @@
-import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import { useAuth } from "./hooks";
 import BodyLayout from "./layout/BodyLayout";
 import MainLayout from "./layout/MainLayout";
 import Homepage from "./pages/Homepage";
@@ -11,13 +9,11 @@ import SignUp from "./pages/SignUp";
 import SuccessRegister from "./pages/SuccessRegister";
 import { EmailSessionRoute, PrivateRoute } from "./router";
 import PublicRoute from "./router/PublicRoute";
-import socket from "./lib/socketClient";
-import { useAppContext } from "./context/AppProvider";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<PrivateRoute />}>
+      <Route element={<PrivateRoute />}>
         {/**
          * PrivateRoute is a route that is only accessible to authenticated users.
          */}
@@ -34,7 +30,6 @@ function App() {
          */}
         <Route path="/login" element={<SignIn />} />
         <Route path="/register" element={<SignUp />} />
-
         <Route element={<EmailSessionRoute />}>
           {/**
            * Route to the email verification page.

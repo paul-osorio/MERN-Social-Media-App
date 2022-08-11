@@ -1,14 +1,15 @@
 import Images from "./Images";
+import SharedPost from "./SharedPost";
 
 interface IBody {
-  images?: any;
-  content?: string;
+  data?: any;
 }
-const Body = ({ content, images }: IBody) => {
+const Body = ({ data }: IBody) => {
   return (
     <div className="flex flex-col space-y-2">
-      <p>{content}</p>
-      {images.length > 0 && <Images images={images} />}
+      <p>{data?.content}</p>
+      {data?.images?.length > 0 && <Images images={data?.images} />}
+      {data?.shareID && <SharedPost shareID={data?.shareID} />}
     </div>
   );
 };

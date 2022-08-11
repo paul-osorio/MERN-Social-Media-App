@@ -1,6 +1,9 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { AcceptFriend, AddFriend, RejectFriend } from "../lib/user";
-import socket from "../lib/socketClient";
+import io from "socket.io-client";
+import { useAppContext } from "../context/AppProvider";
+
+const socket = io(import.meta.env.VITE_APP_BASE_URL + "/friends");
 
 export default (user: any) => {
   const friend = user?.friendStatus;
@@ -14,6 +17,10 @@ export default (user: any) => {
       await AddFriend(user?._id);
       setStatus("Cancel Request");
       setIsLoading(false);
+      socket.emit("add-friend", {
+        to: user?._id,
+        from: user?.myId,
+      });
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -26,6 +33,10 @@ export default (user: any) => {
       await RejectFriend(user?._id);
       setStatus("Add Friend");
       setIsLoading(false);
+      socket.emit("reject-friend", {
+        to: user?._id,
+        from: user?.myId,
+      });
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -38,6 +49,10 @@ export default (user: any) => {
       await AcceptFriend(user?._id);
       setStatus("Message");
       setIsLoading(false);
+      socket.emit("accept-friend", {
+        to: user?._id,
+        from: user?.myId,
+      });
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -67,34 +82,39 @@ export default (user: any) => {
       if (friend?.recipient === user?._id) {
         if (friend?.status === 0) setStatus("Cancel Request");
         else setStatus("Message");
-      } else {
-        if (friend?.status === 0) setStatus("Accept");
-        else setStatus("Message");
       }
+      if (friend?.status === 0) setStatus("Accept");
+      else setStatus("Message");
     } else {
       setStatus("Add Friend");
     }
   };
 
   useLayoutEffect(() => {
-    socket.on("addFriend", (data: any) => {
-      if (user?.myId === data.to && user?._id === data.from) {
+    // socket.on("connect", () => {
+    socket.emit("setup", user?.myId);
+
+    socket.on("sent request", (friendId: any) => {
+      if (friendId === user?._id) {
         setStatus("Accept");
       }
     });
-    socket.on("acceptFriend", (data: any) => {
-      if (user?.myId === data.to && user?._id === data.from) {
-        setStatus("Message");
-      }
-    });
-    socket.on("rejectFriend", (data: any) => {
-      if (user?.myId === data.to && user?._id === data.from) {
+
+    socket.on("rejected request", (friendId: any) => {
+      if (friendId === user?._id) {
         setStatus("Add Friend");
       }
     });
 
+    socket.on("accepted request", (friendId: any) => {
+      if (friendId === user?._id) {
+        setStatus("Message");
+      }
+    });
+    // });
+
     initialStatus();
-  }, []);
+  }, [user]);
 
   return {
     status,

@@ -70,9 +70,19 @@ app.use("/api/v1/", require("./main_routes"));
 // const onConnection = require("./socketHandlers");
 const messageNamespace = require("./socketHandlers/messageHandler");
 const globalNamespace = require("./socketHandlers/globalHandler");
+const friendNamespace = require("./socketHandlers/friendHandler");
+const postNamespace = require("./socketHandlers/postHandler");
+
+var posts = io.of("/posts").on("connection", (socket) => {
+  postNamespace.respond(posts, socket);
+});
 
 var chat = io.of("/chat").on("connection", (socket) => {
   messageNamespace.respond(chat, socket);
+});
+
+var friends = io.of("/friends").on("connection", (socket) => {
+  friendNamespace.respond(friends, socket);
 });
 
 var main = io.on("connection", (socket) => {

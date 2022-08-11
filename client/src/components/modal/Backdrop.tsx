@@ -8,19 +8,10 @@ interface BackdropProps {
 
 const Backdrop = ({ children, handleClose }: BackdropProps) => {
   useEffect(() => {
-    const setBodyOverflow = () => {
-      document.body.style.position = "fixed";
-      document.body.style.width = "100%";
-      document.body.style.overflowY = "scroll";
-    };
-    const resetBodyOverflow = () => {
-      document.body.style.position = "static";
-      document.body.style.width = "auto";
-      document.body.style.overflowY = "auto";
-    };
-    setBodyOverflow();
+    //disable scrollbar when backdrop is open
+    document.body.style.overflow = "hidden";
     return () => {
-      resetBodyOverflow();
+      document.body.style.overflow = "auto";
     };
   }, []);
 

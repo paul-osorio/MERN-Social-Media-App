@@ -11,6 +11,7 @@ module.exports.respond = (io, socket) => {
   socket.on("disconnect", (data) => {
     console.log("user disconnected");
     io.to("online users").emit("offline", Object.values(users));
+    socket.leave("online users");
 
     delete users[socket.id];
   });

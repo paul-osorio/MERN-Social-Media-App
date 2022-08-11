@@ -54,6 +54,12 @@ const userSchema = new Schema(
         ref: "Post",
       },
     ],
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
     friends: [FriendSchema],
   },
   {

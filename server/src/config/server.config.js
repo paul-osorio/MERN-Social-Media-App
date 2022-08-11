@@ -6,7 +6,11 @@ const PORT = process.env.PORT || 5000;
 module.exports = {
   port: PORT,
   corsOptions: {
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: [
+      "http://localhost:5173",
+      "http://127.0.0.1:5173",
+      "http://127.0.0.1:4173",
+    ],
     credentials: true,
     optionsSuccessStatus: 200,
   },

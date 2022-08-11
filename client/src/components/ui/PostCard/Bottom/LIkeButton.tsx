@@ -1,13 +1,18 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useRef } from "react";
+import useThousands from "../../../../hooks/useThousands";
 
 interface ILikeButton {
   isLiked?: boolean;
   onClick?: any;
+  dataId?: any;
+  likes: any;
 }
 
-const LikeButton = ({ isLiked, onClick }: ILikeButton) => {
+const LikeButton = ({ isLiked, onClick, dataId, likes }: ILikeButton) => {
+  const thousand = useThousands(likes, 1);
   const heartRef = useRef<any>(null);
+
   return (
     <div
       role="button"
@@ -32,7 +37,7 @@ const LikeButton = ({ isLiked, onClick }: ILikeButton) => {
         </div>
       )}
 
-      <span className="text-sm text-gray-500 pl-7">5.5k</span>
+      <span className="text-sm text-gray-500 pl-7">{thousand}</span>
     </div>
   );
 };

@@ -26,6 +26,7 @@ const searchAll = async (req, res) => {
       },
       {
         sort: { score: { $meta: "textScore" } },
+        limit: 5,
       }
     ).populate("user");
 

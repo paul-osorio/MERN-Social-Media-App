@@ -16,6 +16,22 @@ const postSchema = new Schema(
       ref: "User",
       required: true,
     },
+    likes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    shares: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
+    shareID: {
+      type: Schema.Types.ObjectId,
+      ref: "Post",
+    },
   },
   {
     timestamps: true,
