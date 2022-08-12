@@ -7,6 +7,7 @@ import Search from "./pages/Search";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import SuccessRegister from "./pages/SuccessRegister";
+import ViewPost from "./pages/ViewPost";
 import { EmailSessionRoute, PrivateRoute } from "./router";
 import PublicRoute from "./router/PublicRoute";
 
@@ -21,6 +22,7 @@ function App() {
           <Route element={<BodyLayout />}>
             <Route path="" element={<Homepage />} />
             <Route path="search" element={<Search />} />
+            <Route path="/:id" element={<ViewPost />} />
           </Route>
         </Route>
       </Route>
