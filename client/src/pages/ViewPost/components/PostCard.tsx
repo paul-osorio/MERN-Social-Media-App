@@ -16,7 +16,7 @@ const PostCard = () => {
   });
 
   return (
-    <div className="w-full bg-white rounded-3xl shadow">
+    <div className="w-full bg-white rounded-3xl shadow mb-10">
       <div className="p-5 flex flex-col space-y-2">
         <TopName author={data?.user} timestamp={data?.createdAt} />
         <Body data={data} />

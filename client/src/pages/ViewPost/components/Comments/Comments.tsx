@@ -1,10 +1,9 @@
-import CommentsCard from "./CommentsCard";
+import CommentsMain from "./CommentsMain";
 
 const Comments = () => {
   return (
     <div className="flex flex-col space-y-3">
-      <CommentsCard />
-      <CommentsCard />
+      <CommentsMain />
     </div>
   );
 };
