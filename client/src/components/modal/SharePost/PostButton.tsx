@@ -3,7 +3,13 @@ import { useState } from "react";
 import { useAppContext } from "../../../context/AppProvider";
 import { sharePost } from "../../../lib/post";
 
-const PostButton = ({ handleClose }: { handleClose: any }) => {
+const PostButton = ({
+  handleClose,
+  content,
+}: {
+  handleClose: any;
+  content: any;
+}) => {
   const { sharePost: post } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -11,7 +17,10 @@ const PostButton = ({ handleClose }: { handleClose: any }) => {
   const onShare = async () => {
     setIsLoading(true);
     try {
-      await sharePost(post);
+      await sharePost({
+        postId: post,
+        content: content,
+      });
       handleClose();
       queryClient.invalidateQueries(["posts"]);
       setIsLoading(false);

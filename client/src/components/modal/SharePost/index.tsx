@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { useAppContext } from "../../../context/AppProvider";
 import ShareProvider from "../../../context/ShareContext";
 import { getOnePost } from "../../../lib/post";
@@ -11,6 +12,7 @@ import TextArea from "./TextArea";
 
 const SharePost = ({ handleClose }: { handleClose: any }) => {
   const { sharePost } = useAppContext();
+  const [content, setContent] = useState("");
 
   const { data } = useQuery(["getOnePost", sharePost], async () => {
     const response = await getOnePost(sharePost);
@@ -29,14 +31,14 @@ const SharePost = ({ handleClose }: { handleClose: any }) => {
           <CloseButton onClick={handleClose} />
         </div>
         <div className="min-h-[50px] max-h-[22rem] flex flex-col overflow-auto createpost-scrollbar">
-          <TextArea />
+          <TextArea setContent={setContent} content={content} />
 
           <PostCard data={data} />
         </div>
         <div className="flex items-center justify-between">
           <Options />
         </div>
-        <PostButton handleClose={handleClose} />
+        <PostButton content={content} handleClose={handleClose} />
       </div>
     </Backdrop>
   );

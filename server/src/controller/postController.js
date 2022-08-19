@@ -120,6 +120,7 @@ const sharePost = async (req, res) => {
     const post = await PostModel.create({
       shareID: req.body.postId,
       user: req.user._id,
+      content: req.body.content,
     });
 
     const sharedPost = await PostModel.findById(req.body.postId);

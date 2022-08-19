@@ -14,7 +14,7 @@ import PublicRoute from "./router/PublicRoute";
 function App() {
   return (
     <Routes>
-      <Route element={<PrivateRoute />}>
+      <Route path="/" element={<PrivateRoute />}>
         {/**
          * PrivateRoute is a route that is only accessible to authenticated users.
          */}
@@ -22,7 +22,7 @@ function App() {
           <Route element={<BodyLayout />}>
             <Route path="" element={<Homepage />} />
             <Route path="search" element={<Search />} />
-            <Route path="/:id" element={<ViewPost />} />
+            <Route path="post/:postId" element={<ViewPost />} />
           </Route>
         </Route>
       </Route>

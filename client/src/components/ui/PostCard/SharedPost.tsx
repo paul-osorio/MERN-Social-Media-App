@@ -10,7 +10,7 @@ const SharedPost = ({ shareID }: { shareID: any }) => {
   });
 
   return (
-    <div className="border rounded-3xl p-3">
+    <div className="border rounded-3xl p-5">
       <TopName author={data?.user} timestamp={data?.createdAt} />
       <Body data={data} />
     </div>

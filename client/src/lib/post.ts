@@ -29,6 +29,6 @@ export function getSharesCount(postId: any) {
   return axiosClient.get(`/posts/share/${postId}`);
 }
 
-export function sharePost(postId: any) {
-  return axiosClient.post(`/posts/share`, { postId });
+export function sharePost(data: any) {
+  return axiosClient.post(`/posts/share`, data);
 }
