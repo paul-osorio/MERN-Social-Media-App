@@ -20,17 +20,15 @@ const TopName = ({ author, timestamp }: { author: any; timestamp: any }) => {
             className="w-9 h-9 object-cover rounded-full"
             alt=""
           />
-          {user?._id !== author?._id && (
-            <div
-              className={classNames(
-                "h-2 w-2 ring-2 ring-white rounded-full absolute bottom-1 right-0",
-                {
-                  "bg-green-500": isOnline,
-                  "bg-gray-300": !isOnline,
-                }
-              )}
-            />
-          )}
+          <div
+            className={classNames(
+              "h-2 w-2 ring-2 ring-white rounded-full absolute bottom-1 right-0",
+              {
+                "bg-green-500": isOnline,
+                "bg-gray-300": !isOnline,
+              }
+            )}
+          />
         </div>
         <div className="">
           <span className="block leading-3 font-medium text-gray-600">

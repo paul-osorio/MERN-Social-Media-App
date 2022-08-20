@@ -9,7 +9,9 @@ const Options = ({ setOpenComment }: { setOpenComment: any }) => {
       </div>
       <div
         role="button"
-        onClick={() => setOpenComment(true)}
+        onClick={() => {
+          setOpenComment(true);
+        }}
         className=" flex items-center justify-center rounded-full"
       >
         <i className="fas text-gray-500 fa-reply"></i>

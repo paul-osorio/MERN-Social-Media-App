@@ -1,19 +1,26 @@
+import classNames from "classnames";
 import { useState } from "react";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import { useAppContext } from "../../../../context/AppProvider";
 import useAvatar from "../../../../hooks/useAvatar";
 import { replyComment } from "../../../../lib/post";
+import { postSocket } from "../../../../lib/socket.config";
 
 const NestedCommentArea = ({
   postId,
   commentId,
+  setShowReplies,
+  setOpenComment,
 }: {
   postId: any;
   commentId: any;
+  setShowReplies: any;
+  setOpenComment: any;
 }) => {
   const [comment, setComment] = useState("");
   const { onlineUsers, user } = useAppContext();
   const avatar = useAvatar(user);
+  const isOnline = onlineUsers.includes(user?._id);
 
   const handleKeyDown = async (evt: any) => {
     if (evt.keyCode == 13 && !evt.shiftKey) {
@@ -26,6 +33,10 @@ const NestedCommentArea = ({
             commentId: commentId,
             content: comment,
           });
+          postSocket.emit("new comment", postId);
+          setShowReplies(true);
+          setOpenComment(false);
+
           console.log("comment added");
         } catch (err) {
           console.log(err);
@@ -43,15 +54,15 @@ const NestedCommentArea = ({
           <div>
             <img src={avatar} className="w-6 h-6 rounded-full object-cover" />
           </div>
-          {/* <div
+          <div
             className={classNames(
-              "h-2 w-2 ring-2 ring-white rounded-full absolute bottom-1 right-0",
+              "h-1.5 w-1.5 ring-2 ring-white rounded-full absolute bottom-0 right-0",
               {
                 "bg-green-500": isOnline,
                 "bg-gray-300": !isOnline,
               }
             )}
-          /> */}
+          />
         </div>
       </div>
       <div className="w-full">

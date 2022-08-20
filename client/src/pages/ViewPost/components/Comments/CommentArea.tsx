@@ -4,13 +4,14 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 import { useAppContext } from "../../../../context/AppProvider";
 import { useState } from "react";
 import { addComment } from "../../../../lib/post";
+import { postSocket } from "../../../../lib/socket.config";
 
 const CommentArea = ({ data, post }: { data: any; post: any }) => {
   const [comment, setComment] = useState("");
   const { onlineUsers, user } = useAppContext();
   const avatar = useAvatar(user);
 
-  const isOnline = onlineUsers.includes(data?._id);
+  const isOnline = onlineUsers.includes(user?._id);
 
   //add next line when shift enter is pressed
   const handleKeyDown = async (evt: any) => {
@@ -23,6 +24,8 @@ const CommentArea = ({ data, post }: { data: any; post: any }) => {
             postId: post?._id,
             content: comment,
           });
+
+          postSocket.emit("new comment", post?._id);
           console.log("comment added");
         } catch (err) {
           console.log(err);
