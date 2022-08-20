@@ -21,8 +21,8 @@ const PostCard = () => {
         <TopName author={data?.user} timestamp={data?.createdAt} />
         <Body data={data} />
         <Options />
-        <CommentArea data={data?.user} />
-        <Comments />
+        <CommentArea data={data?.user} post={data} />
+        <Comments comments={data?.comments} post={data} />
       </div>
     </div>
   );

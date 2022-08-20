@@ -13,8 +13,12 @@ const {
   sharePost,
   getOnePost,
   getShareCount,
+  commentPost,
+  replyComment,
 } = require("../controller/postController");
 
+router.post("/comment", isAuthenticated, commentPost);
+router.post("/comment/reply", isAuthenticated, replyComment);
 router.post("/like", isAuthenticated, likePost);
 router.get("/like/:id", isAuthenticated, getLikeCount);
 router.post("/unlike", isAuthenticated, unlikePost);

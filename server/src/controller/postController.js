@@ -137,13 +137,61 @@ const sharePost = async (req, res) => {
 
 const getOnePost = async (req, res) => {
   try {
-    const post = await PostModel.findById(req.params.id).populate(
-      "user",
-      "nameFirst nameLast avatar profile email"
-    );
+    //get post and order comments by date
+    const post = await PostModel.findOne({
+      _id: req.params.id,
+    })
+      .populate("user", "nameFirst nameLast avatar profile email")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+          select: "nameFirst nameLast avatar profile email",
+        },
+      })
+      .populate({
+        path: "comments.replies",
+        populate: {
+          path: "user",
+
+          select: "nameFirst nameLast avatar profile email",
+        },
+      });
+
     res.status(200).json(post);
   } catch (error) {
     res.status(500).json(error);
+  }
+};
+
+const commentPost = async (req, res) => {
+  const { content, postId } = req.body;
+  const user = req.user._id;
+
+  try {
+    const post = await PostModel.findById(postId);
+    post.comments.push({ content, user });
+    await post.save();
+
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+const replyComment = async (req, res) => {
+  const { content, commentId, postId } = req.body;
+  const user = req.user._id;
+
+  try {
+    const post = await PostModel.findById(postId);
+    const comment = post.comments.id(commentId);
+    comment.replies.push({ content, user });
+    await post.save();
+
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(500).json(err);
   }
 };
 
@@ -157,4 +205,6 @@ module.exports = {
   sharePost,
   getOnePost,
   getShareCount,
+  commentPost,
+  replyComment,
 };

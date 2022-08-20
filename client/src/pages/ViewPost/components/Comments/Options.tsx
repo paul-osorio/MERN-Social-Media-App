@@ -1,4 +1,4 @@
-const Options = () => {
+const Options = ({ setOpenComment }: { setOpenComment: any }) => {
   return (
     <div className="flex space-x-2 mt-1 text-sm mx-2">
       <div
@@ -9,6 +9,7 @@ const Options = () => {
       </div>
       <div
         role="button"
+        onClick={() => setOpenComment(true)}
         className=" flex items-center justify-center rounded-full"
       >
         <i className="fas text-gray-500 fa-reply"></i>

@@ -32,3 +32,11 @@ export function getSharesCount(postId: any) {
 export function sharePost(data: any) {
   return axiosClient.post(`/posts/share`, data);
 }
+
+export function addComment(data: any) {
+  return axiosClient.post(`/posts/comment`, data);
+}
+
+export function replyComment(data: any) {
+  return axiosClient.post(`/posts/comment/reply`, data);
+}

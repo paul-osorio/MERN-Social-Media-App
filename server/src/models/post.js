@@ -23,12 +23,13 @@ const commentSchema = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     content: {
       type: String,
       required: true,
     },
-    reply: [commentReply],
+    replies: [commentReply],
   },
   {
     timestamps: true,
@@ -66,7 +67,7 @@ const postSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Post",
     },
-    commensts: [commentSchema],
+    comments: [commentSchema],
   },
   {
     timestamps: true,
