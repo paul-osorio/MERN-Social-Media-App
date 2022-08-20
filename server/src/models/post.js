@@ -1,6 +1,40 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const commentReply = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const commentSchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+    reply: [commentReply],
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const postSchema = new Schema(
   {
     content: {
@@ -32,6 +66,7 @@ const postSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Post",
     },
+    commensts: [commentSchema],
   },
   {
     timestamps: true,
